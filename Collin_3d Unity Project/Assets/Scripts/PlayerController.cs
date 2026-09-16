@@ -6,8 +6,13 @@ public class PlayerController : MonoBehaviour
     public float speed = 5.0f;
     public float jumpheight = 10.0f;
     public float jumpDetectDistance = 1.0f;
+
     Ray jumpRay;
     Vector2 moveInput = Vector2.zero;
+
+    GameObject currentWeaponObj;
+    Transform weaponSlot;
+    Camera playerCam;
     PlayerInput input;
     Rigidbody Rb;
 
@@ -18,6 +23,10 @@ public class PlayerController : MonoBehaviour
         input = GetComponent<PlayerInput>();
         Rb = GetComponent<Rigidbody>();
         jumpRay = new Ray();
+        playerCam = Camera.main;
+        weaponSlot = transform.GetChild(0);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -42,4 +51,6 @@ public class PlayerController : MonoBehaviour
             Rb.AddForce(transform.up * jumpheight, ForceMode.Impulse);
 
     }
+
+    
 }
