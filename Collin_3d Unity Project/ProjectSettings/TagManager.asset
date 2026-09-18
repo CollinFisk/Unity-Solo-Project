@@ -7,7 +7,9 @@ TagManager:
   - Weapon
   - Projectile
   - Ammo
-  - hazard
+  - Undefined
+  - Hazard
+  - InteractSphere
   layers:
   - Default
   - TransparentFX

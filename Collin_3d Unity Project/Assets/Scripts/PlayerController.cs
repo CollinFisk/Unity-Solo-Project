@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public float interactDistance = 5f;
     public float fusionDmgInterval = 1;
 
+    public Transform InteractSphere;
+
     public bool attacking = false;
     public bool fusionDmg = false;
 
@@ -57,6 +59,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        InteractSphere.position = transform.position;
+
         if (health <= 0)
         {
 
@@ -224,6 +228,15 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+
+        if (other.gameObject.tag == "Weapon")
+            pickupObj = other.gameObject;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Weapon")
+            pickupObj = null;
     }
 
     private void OnCollisionExit(Collision collision)

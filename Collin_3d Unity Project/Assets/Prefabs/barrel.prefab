@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4863984727426411453}
   m_Layer: 0
   m_Name: barrel
-  m_TagString: hazard
+  m_TagString: Hazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
