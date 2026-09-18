@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Weapon
   - Projectile
+  - Ammo
+  - hazard
   layers:
   - Default
   - TransparentFX
