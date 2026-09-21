@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     public bool fusionDmg = false;
 
     Ray jumpRay;
-    Ray interactRay;
     RaycastHit interactHit;
     Vector2 moveInput = Vector2.zero;
 
@@ -41,11 +40,12 @@ public class PlayerController : MonoBehaviour
         jumpRay = new Ray();
         playerCam = Camera.main;
 
-        interactRay = new Ray();
         weaponSlot = playerCam.transform.GetChild(0);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        InteractSphere = GameObject.Find("InteractSphere").transform;
     }
 
     private void FixedUpdate()
@@ -68,22 +68,6 @@ public class PlayerController : MonoBehaviour
 
         jumpRay.origin = transform.position;
         jumpRay.direction = -transform.up;
-
-        interactRay.origin = playerCam.transform.position;
-        interactRay.direction = playerCam.transform.forward;
-
-        if (Physics.Raycast(interactRay, out interactHit, interactDistance))
-        {
-            if (interactHit.collider.tag == "Weapon" || interactHit.collider.tag == "Ammo")
-            {
-                pickupObj = interactHit.collider.gameObject;
-            }
-
-            else
-                pickupObj = null;
-        }
-        else
-            pickupObj = null;
 
         if (currentWeapon)
             if (currentWeapon.holdToAttack && attacking)
@@ -120,24 +104,6 @@ public class PlayerController : MonoBehaviour
                 {
                     pickupObj.GetComponent<Weapon>().equip(this);
                 }
-
-                // Interact to pickup ammo
-                /*
-                if (pickupObj.tag == "Ammo" && currentWeapon && currentWeapon.ammo < currentWeapon.maxAmmo)
-                {
-                    int refillAmt = currentWeapon.ammo + currentWeapon.ammoRefill;
-
-                    if (refillAmt >= currentWeapon.maxAmmo)
-                    {
-                        currentWeapon.ammo = currentWeapon.maxAmmo;
-                    }
-                    else
-                        currentWeapon.ammo += currentWeapon.ammoRefill;
-
-                    Destroy(pickupObj);
-                }
-                */
-
                 pickupObj = null;
             }
             else if (currentWeapon)
