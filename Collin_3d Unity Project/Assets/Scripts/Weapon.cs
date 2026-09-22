@@ -1,5 +1,8 @@
 using System.Collections;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class Weapon : MonoBehaviour
 {
@@ -16,12 +19,14 @@ public class Weapon : MonoBehaviour
     public bool reloading = false;
     public int weaponID;
     public string weaponName;
+    public float targetEnemy;
 
     [Header("Weapon Stats")]
     public float projLifespan;
     public float projVelocity;
     public float reloadCooldown;
     public float rof;
+
     public int fireModes;
     public int currentFireMode;
     public int clip;

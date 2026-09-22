@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            weaponText.text = " ";
             ammoText.text = " ";
             clipText.text = " ";
         }
