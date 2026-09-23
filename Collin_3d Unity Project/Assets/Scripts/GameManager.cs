@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController player;
 
-    public Image healthBar;
+    public Slider healthBar;
 
     public TextMeshProUGUI ammoText;
     public TextMeshProUGUI clipText;
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
-        healthBar = GameObject.Find("Healthbar").GetComponent<Image>();
+        healthBar = GameObject.Find("healthBar").GetComponent<Slider>();
 
         ammoText = GameObject.Find("ammoText").GetComponent<TextMeshProUGUI>();
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        healthBar.fillAmount = (float)player.health / (float)player.maxHealth;
+        healthBar.value = player.health;
 
         if(player.currentWeapon)
         {

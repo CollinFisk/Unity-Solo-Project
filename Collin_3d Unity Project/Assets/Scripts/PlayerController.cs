@@ -13,11 +13,13 @@ public class PlayerController : MonoBehaviour
     public float jumpDetectDistance = 1f;
     public float interactDistance = 5f;
     public float fusionDmgInterval = 1;
+    public float enemyAttackRate = 1;
 
     public Transform InteractSphere;
 
     public bool attacking = false;
     public bool fusionDmg = false;
+    public bool enemyDamage = false;
 
     Ray jumpRay;
     RaycastHit interactHit;
@@ -164,6 +166,16 @@ public class PlayerController : MonoBehaviour
             health--;
         }
 
+        if (collision.gameObject.tag == "Enemy")
+        {
+            health--;
+        }
+
+        if (collision.gameObject.tag == "EnemyAttack")
+        {
+            health--;
+        }
+
         if (collision.gameObject.tag == "FusionHazard")
         {
             health--;
@@ -186,6 +198,15 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine("fusionDmgCooldown");
             }
         }
+
+        if (collision.gameObject.tag == "Enemy")
+
+        {
+            if (!enemyDamage)
+            {
+                StartCoroutine("enemyDmgCooldown");
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -203,6 +224,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Weapon")
             pickupObj = null;
+
     }
 
     private void OnCollisionExit(Collision collision)
@@ -215,6 +237,12 @@ public class PlayerController : MonoBehaviour
                 fusionDmg = false;
             }
         }
+        if (collision.gameObject.tag == "Enemy")
+            if (enemyDamage)
+            {
+                StopCoroutine("enemyDmgCooldown");
+                enemyDamage = false;
+            }
     }
 
     IEnumerator fusionDmgCooldown()
@@ -225,5 +253,15 @@ public class PlayerController : MonoBehaviour
 
         health--;
         fusionDmg = false;
+    }
+
+    IEnumerator enemyDmgCooldown()
+    {
+        enemyDamage = true;
+
+        yield return new WaitForSeconds(enemyAttackRate);
+
+        health--;
+        enemyDamage = false;
     }
 }

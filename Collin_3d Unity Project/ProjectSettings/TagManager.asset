@@ -12,6 +12,8 @@ TagManager:
   - InteractSphere
   - Enemy
   - EnemyAttackRange
+  - Health
+  - FusionHazard
   layers:
   - Default
   - TransparentFX
