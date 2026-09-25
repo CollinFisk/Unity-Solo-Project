@@ -49,11 +49,7 @@ public class Enemy : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
-        {
-            // Stop the agent 
-            // Move if they have to get back to player
-
-            // Set attacking boolean to true
+  
             // In update, make enemy attack and do damage to player while attacking
         }
     }

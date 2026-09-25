@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     PlayerInput input;
     Rigidbody rb;
     public GameObject pickupObj;
-
+    public GameObject EnemyAttackHitbox;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -150,6 +150,7 @@ public class PlayerController : MonoBehaviour
             sprinting = false;
         }
     }
+    /*
     public void Crouch(InputAction.CallbackContext context)
     {
         if (!crouching)
@@ -159,11 +160,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            
-            crouching = false
+            crouching = false; 
         }
     }
-
+    */
     public void DropWeapon()
     {
         if (currentWeapon)
@@ -198,6 +198,11 @@ public class PlayerController : MonoBehaviour
             health--;
         }
 
+        if (collision.gameObject.tag == "RangedEnemy")
+        {
+            health--;
+        }
+
         if (collision.gameObject.tag == "EnemyAttack")
         {
             health--;
@@ -225,15 +230,7 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine("fusionDmgCooldown");
             }
         }
-
-        if (collision.gameObject.tag == "Enemy")
-
-        {
-            if (!enemyDamage)
-            {
-                StartCoroutine("enemyDmgCooldown");
-            }
-        }
+       
     }
 
     private void OnTriggerEnter(Collider other)
@@ -246,12 +243,30 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Weapon")
             pickupObj = other.gameObject;
     }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "EnemyAttackHitbox")
+
+        {
+            if (!enemyDamage)
+            {
+                StartCoroutine("enemyDmgCooldown");
+            }
+        }
+    }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Weapon")
             pickupObj = null;
 
+        if (other.gameObject.tag == "EnemyAttackHitbox")
+        {
+            if (enemyDamage)
+            {
+                StopCoroutine("EnemyAttackHitbox");
+            }
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -264,14 +279,8 @@ public class PlayerController : MonoBehaviour
                 fusionDmg = false;
             }
         }
-        if (collision.gameObject.tag == "Enemy")
-            if (enemyDamage)
-            {
-                StopCoroutine("enemyDmgCooldown");
-                enemyDamage = false;
-            }
     }
-
+    
     IEnumerator fusionDmgCooldown()
     {
         fusionDmg = true;
@@ -287,7 +296,7 @@ public class PlayerController : MonoBehaviour
         enemyDamage = true;
 
         yield return new WaitForSeconds(enemyAttackRate);
-
+        
         health--;
         enemyDamage = false;
     }

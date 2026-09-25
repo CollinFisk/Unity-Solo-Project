@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour
     [Header("Object Refrences")]
     public GameObject projectile;
     public Transform firePoint;
-    public Camera firingDirection;
+    public Vector2 firingDirection;
 
     [Header("Meta Attributes")]
     public bool canFire = true;
@@ -41,7 +41,7 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         firePoint = transform.GetChild(0);
-        firingDirection = Camera.main;
+        firingDirection = player.transform.forward;
     }
 
     public void equip(PlayerController p)
@@ -100,7 +100,7 @@ public class Weapon : MonoBehaviour
             clip--;
 
             GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
-            p.GetComponent<Rigidbody>().AddForce(firingDirection.transform.forward * projVelocity);
+            p.GetComponent<Rigidbody>().AddForce(firingDirection * projVelocity);
             Destroy(p, projLifespan);
             canFire = false;
             StartCoroutine("cooldownFire");

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
-
+/*
 public class EnemyAttacking : MonoBehaviour
 {
     public PlayerController player;
@@ -38,16 +38,27 @@ public class EnemyAttacking : MonoBehaviour
             EnemyAttackHitbox.rotation = enemy.rotation;
         }
     
-            public void StartEnemyAttack(Collider other)
+
+    private void OnColliderEnter(Collider other)
+    {
+        if(other.gameObject.tag == ("EnemyAttackHitbox"))
             {
-                if (other.gameObject.tag == ("EnemyAttackHitbox"))
-                {
-                    if (enemyAttacking == false)
-                    {
-                     StartCoroutine("Slash1");
-                    }
-                }
+            if (enemyAttacking == false)
+            {
+                StartCoroutine("Slash1");
             }
+        }
+    }
+    private void OnColliderStay(Collider other)
+    {
+        if (other.gameObject.tag == ("EnemyAttackHitbox"))
+        {
+            if (enemyAttacking == false)
+            {
+                StartCoroutine("Slash1");
+            }
+        }
+    }
     IEnumerator Slash1()
     {
         enemyAttacking = true;
@@ -58,3 +69,4 @@ public class EnemyAttacking : MonoBehaviour
         enemyAttacking = false;
     }
 }
+*/

@@ -16,6 +16,9 @@ TagManager:
   - FusionHazard
   - EnemyAttack
   - EnemyAttackHitbox
+  - RangedEnemy
+  - EnemyGun
+  - eprojectile
   layers:
   - Default
   - TransparentFX
