@@ -21,7 +21,7 @@ public class EnemyAttacking : MonoBehaviour
     public float SlashTime;
 
     public bool enemyAttacking = false;
-    public bool isFollowing = false;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,37 +36,25 @@ public class EnemyAttacking : MonoBehaviour
         {
             EnemyAttackHitbox.position = enemy.position;
             EnemyAttackHitbox.rotation = enemy.rotation;
-
-            if (enemyAttacking)
-            {
-                isFollowing = false;
-            }
-            else
-            {
-                isFollowing = true;
-            }
         }
     
             public void StartEnemyAttack(Collider other)
             {
-                if (other.gameObject.tag == "EnemyAttackHitbox")
+                if (other.gameObject.tag == ("EnemyAttackHitbox"))
                 {
-                    if (!enemyAttacking)
+                    if (enemyAttacking == false)
                     {
                      StartCoroutine("Slash1");
                     }
-                    if (enemyAttacking)
-                    {
-                     GameObject p = Instantiate(EnemyAttackSlash, EnemyAttackHitbox.position, EnemyAttackHitbox.rotation);
-                     Destroy(p, SlashTime);
-                     enemyAttacking = false;
-                    }
                 }
             }
-
     IEnumerator Slash1()
     {
-        yield return new WaitForSeconds(SlashSpeed);
         enemyAttacking = true;
+        yield return new WaitForSeconds(SlashSpeed);
+        GameObject p = Instantiate(EnemyAttackSlash, EnemyAttackHitbox.position, EnemyAttackHitbox.rotation);
+        yield return new WaitForSeconds(SlashTime);
+        Destroy(p);
+        enemyAttacking = false;
     }
 }

@@ -2,15 +2,17 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
     public int health = 5;
     public int maxHealth = 5;
 
-    public float speed = 5.0f;
-    public float jumpHeight = 10.0f;
-    public float jumpDetectDistance = 1f;
+    public float sprintSpeed = 30.0f;
+    public float speed = 15.0f;
+    public float jumpHeight = 5.0f;
+    public float jumpDetectDistance = 1.1f;
     public float interactDistance = 5f;
     public float fusionDmgInterval = 1;
     public float enemyAttackRate = 1;
@@ -18,6 +20,8 @@ public class PlayerController : MonoBehaviour
     public Transform InteractSphere;
 
     public bool attacking = false;
+    public bool sprinting = false;
+    public bool crouching = false;
     public bool fusionDmg = false;
     public bool enemyDamage = false;
 
@@ -43,9 +47,6 @@ public class PlayerController : MonoBehaviour
         playerCam = Camera.main;
 
         weaponSlot = playerCam.transform.GetChild(0);
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         InteractSphere = GameObject.Find("InteractSphere").transform;
     }
@@ -134,6 +135,32 @@ public class PlayerController : MonoBehaviour
 
             else if (context.ReadValueAsButton())
                 currentWeapon.fire();
+        }
+    }
+    public void Sprint(InputAction.CallbackContext context)
+    {
+        if (sprinting == false)
+        {
+            speed = (sprintSpeed);
+            sprinting = true;
+        }
+        else
+        {
+            speed = 10;
+            sprinting = false;
+        }
+    }
+    public void Crouch(InputAction.CallbackContext context)
+    {
+        if (!crouching)
+        {
+            transform <ScaleMode>(1, 0.5, 1);
+            crouching = true;
+        }
+        else
+        {
+            
+            crouching = false
         }
     }
 
