@@ -9,6 +9,9 @@ public class Enemy : MonoBehaviour
     public PlayerController player;
     public float detectionRadius = 5f;
 
+    public Transform enemy;
+    public Transform EnemyAttackHitbox;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,6 +23,9 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        EnemyAttackHitbox.position = enemy.position;
+        EnemyAttackHitbox.rotation = enemy.rotation;
+
         GetComponent<SphereCollider>().radius = detectionRadius;
         if (isFollowing)
         {

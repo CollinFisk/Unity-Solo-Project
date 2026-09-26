@@ -26,6 +26,11 @@ public class RangedEnemies : MonoBehaviour
     public float erof;
 
     public bool enemyCanFire = true;
+
+    Ray eShootRay;
+    RaycastHit interactHit;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -39,8 +44,10 @@ public class RangedEnemies : MonoBehaviour
         EnemyGun.SetPositionAndRotation(eweaponSlot.position, eweaponSlot.rotation);
         EnemyGun.SetParent(eweaponSlot);
 
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().isTrigger = true;
+        eShootRay = new Ray();
+
+        EnemyGun.GetComponent<Rigidbody>().isKinematic = true;
+        EnemyGun.GetComponent<Collider>().isTrigger = true;
     }
 
 
@@ -53,6 +60,8 @@ public class RangedEnemies : MonoBehaviour
             agent.destination = player.transform.position;
         }
 
+        eShootRay.origin = RangedEnemy.transform.position;
+        eShootRay.direction = RangedEnemy.forward;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -76,12 +85,16 @@ public class RangedEnemies : MonoBehaviour
     {
         if (isFollowing && enemyCanFire)
         {
+            
+                GameObject p = Instantiate(eprojectile, efirePoint.position, efirePoint.rotation);
+                p.GetComponent<Rigidbody>().AddForce(efiringDirection * eprojVelocity);
+                Destroy(p, eprojLifespan);
+                enemyCanFire = false;
 
-            GameObject p = Instantiate(eprojectile, efirePoint.position, efirePoint.rotation);
-            p.GetComponent<Rigidbody>().AddForce(efiringDirection * eprojVelocity);
-            Destroy(p, eprojLifespan);
-            enemyCanFire = false;
-            StartCoroutine("ecooldownFire");
+                StartCoroutine("ecooldownFire");
+            
+           
+
         }
     }
 
