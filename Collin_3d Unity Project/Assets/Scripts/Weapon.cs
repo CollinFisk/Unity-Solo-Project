@@ -2,6 +2,8 @@ using System.Collections;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.Splines;
 
 public class Weapon : MonoBehaviour
@@ -11,7 +13,6 @@ public class Weapon : MonoBehaviour
     [Header("Object Refrences")]
     public GameObject projectile;
     public Transform firePoint;
-    public Vector2 firingDirection;
 
     [Header("Meta Attributes")]
     public bool canFire = true;
@@ -19,7 +20,6 @@ public class Weapon : MonoBehaviour
     public bool reloading = false;
     public int weaponID;
     public string weaponName;
-    public float targetEnemy;
 
     [Header("Weapon Stats")]
     public float projLifespan;
@@ -41,7 +41,6 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         firePoint = transform.GetChild(0);
-        firingDirection = player.transform.forward;
     }
 
     public void equip(PlayerController p)
@@ -100,7 +99,7 @@ public class Weapon : MonoBehaviour
             clip--;
 
             GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
-            p.GetComponent<Rigidbody>().AddForce(firingDirection * projVelocity);
+            p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
             Destroy(p, projLifespan);
             canFire = false;
             StartCoroutine("cooldownFire");

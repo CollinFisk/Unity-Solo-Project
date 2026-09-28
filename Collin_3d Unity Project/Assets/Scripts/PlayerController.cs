@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         InteractSphere.position = transform.position;
+        InteractSphere.rotation = transform.rotation;
 
         if (health <= 0)
         {
