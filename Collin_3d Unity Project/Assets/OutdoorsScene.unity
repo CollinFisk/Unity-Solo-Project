@@ -1219,7 +1219,6 @@ GameObject:
   - component: {fileID: 655013855}
   - component: {fileID: 655013859}
   - component: {fileID: 655013860}
-  - component: {fileID: 655013861}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Weapon
@@ -1378,22 +1377,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 32
+  m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &655013861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 655013854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 653234eef98115444b05e99138676299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::aiming
-  rotationSpeed: 10
-  mainCamera: {fileID: 1823688466}
 --- !u!1 &704059736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2050,7 +2035,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 946651843}
-  - component: {fileID: 946651844}
   m_Layer: 0
   m_Name: firePoint
   m_TagString: Untagged
@@ -2073,20 +2057,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 655013858}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &946651844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 946651842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 653234eef98115444b05e99138676299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::aiming
-  rotationSpeed: 10
-  mainCamera: {fileID: 1823688466}
 --- !u!1 &981264563
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,7 +2102,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1228569073}
-  - component: {fileID: 1228569074}
   m_Layer: 0
   m_Name: weaponSlot
   m_TagString: Untagged
@@ -2148,27 +2117,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1228569072}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.19690081, y: -0, z: -0, w: 0.98042345}
-  m_LocalPosition: {x: -0.212, y: 0.21, z: 0.247}
-  m_LocalScale: {x: 0.7275695, y: 0.54732645, z: 0.45291933}
+  m_LocalRotation: {x: 0.058722436, y: 0.38190964, z: -0.024323627, w: 0.9220115}
+  m_LocalPosition: {x: 0.26980183, y: 0.03490448, z: 0.68187714}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1823688467}
+  m_Father: {fileID: 1483898747}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1228569074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1228569072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 653234eef98115444b05e99138676299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::aiming
-  rotationSpeed: 10
-  mainCamera: {fileID: 1823688466}
 --- !u!1 &1462924512
 GameObject:
   m_ObjectHideFlags: 0
@@ -2423,7 +2378,6 @@ GameObject:
   - component: {fileID: 1483898748}
   - component: {fileID: 1483898750}
   - component: {fileID: 1483898751}
-  - component: {fileID: 1483898752}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -2550,7 +2504,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 8.7, z: -5.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1228569073}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1483898748
@@ -2784,20 +2739,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1483898752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1483898742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 653234eef98115444b05e99138676299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::aiming
-  rotationSpeed: 10
-  mainCamera: {fileID: 1823688466}
 --- !u!1 &1634714778
 GameObject:
   m_ObjectHideFlags: 0
@@ -3410,8 +3351,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 8.7, z: -5.25}
   m_LocalScale: {x: 1.3744391, y: 1.7461786, z: 2.2887833}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1228569073}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!114 &1823688468

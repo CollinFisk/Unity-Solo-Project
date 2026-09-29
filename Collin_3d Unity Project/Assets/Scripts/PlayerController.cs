@@ -1,5 +1,8 @@
+using JetBrains.Annotations;
 using System.Collections;
+using System.Data.SqlTypes;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -28,6 +31,7 @@ public class PlayerController : MonoBehaviour
     Ray jumpRay;
     RaycastHit interactHit;
     Vector2 moveInput = Vector2.zero;
+    Vector3 worldPos;
 
     public Weapon currentWeapon;
 
@@ -46,7 +50,7 @@ public class PlayerController : MonoBehaviour
         jumpRay = new Ray();
         playerCam = Camera.main;
 
-        weaponSlot = playerCam.transform.GetChild(0);
+        weaponSlot = transform.GetChild(0);
 
         InteractSphere = GameObject.Find("InteractSphere").transform;
     }
@@ -55,15 +59,20 @@ public class PlayerController : MonoBehaviour
     {
         Quaternion playerRotation = Quaternion.identity;
         playerRotation.y = playerCam.transform.rotation.y;
-        playerRotation.w = playerCam.transform.rotation.w;
+        playerRotation.x = playerCam.transform.rotation.x;
         transform.rotation = playerRotation;
     }
 
     // Update is called once per frame
     void Update()
     {
+        worldPos = playerCam.ScreenToWorldPoint(Input.mousePosition);
+        transform.LookAt(worldPos);
+
+
         InteractSphere.position = transform.position;
         InteractSphere.rotation = transform.rotation;
+        weaponSlot.rotation = transform.rotation;
 
         if (health <= 0)
         {
@@ -92,12 +101,13 @@ public class PlayerController : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
     }
 
+    /*
     public void Jump()
     {
         if (Physics.Raycast(jumpRay, jumpDetectDistance))
             rb.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
     }
-
+    */
     public void Interact(InputAction.CallbackContext context)
     {
         if (context.ReadValueAsButton())
