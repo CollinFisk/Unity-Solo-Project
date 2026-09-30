@@ -1,10 +1,14 @@
 using System.Collections;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class RangedEnemies : MonoBehaviour
 {
     public bool isFollowing = false;
+    public bool enemyCanFire = true;
+    public bool efireCooldown = true;
 
     public NavMeshAgent agent;
     public PlayerController player;
@@ -19,15 +23,14 @@ public class RangedEnemies : MonoBehaviour
     public Transform eweaponSlot;
     public Transform EnemyGun;
 
+
+    public Collider boxCollider;
+
     [Header("Weapon Stats")]
     public float eprojLifespan;
     public float eprojVelocity;
     public float erof;
 
-    public bool enemyCanFire = true;
-
-    Ray eShootRay;
-    RaycastHit interactHit;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,10 +46,9 @@ public class RangedEnemies : MonoBehaviour
         EnemyGun.SetPositionAndRotation(eweaponSlot.position, eweaponSlot.rotation);
         EnemyGun.SetParent(eweaponSlot);
 
-        eShootRay = new Ray();
-
         EnemyGun.GetComponent<Rigidbody>().isKinematic = true;
         EnemyGun.GetComponent<Collider>().isTrigger = true;
+        boxCollider = RangedEnemy.GetComponent<BoxCollider>();
     }
 
 
@@ -59,9 +61,24 @@ public class RangedEnemies : MonoBehaviour
             agent.destination = player.transform.position;
         }
 
-        eShootRay.origin = RangedEnemy.transform.position;
-        eShootRay.direction = RangedEnemy.forward;
-    }
+        var pos = player.transform.position;
+        RangedEnemy.LookAt(pos);
+
+        Vector3 euler = RangedEnemy.rotation.eulerAngles;
+        RangedEnemy.rotation = Quaternion.Euler(0, euler.y, 0);
+
+
+
+        if (isFollowing && enemyCanFire)
+        {
+
+            GameObject p = Instantiate(eprojectile, efirePoint.position, efirePoint.rotation);
+            p.GetComponent<Rigidbody>().AddForce(RangedEnemy.transform.forward * eprojVelocity);
+            Destroy(p, eprojLifespan);
+            efireCooldown = true;
+            enemyCanFire = false;
+        }
+}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -72,33 +89,32 @@ public class RangedEnemies : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            isFollowing = true;
+            if (!enemyCanFire && efireCooldown)
+            {
+                StartCoroutine("ecooldownFire");
+            }
+        }
+    }
+    
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
             isFollowing = false;
+            StopCoroutine("ecooldownFire");
+            enemyCanFire = false;
             detectionRadius = 15f;
-        }
-    }
-    public void fire()
-    {
-        if (isFollowing && enemyCanFire)
-        {
-            
-                GameObject p = Instantiate(eprojectile, efirePoint.position, efirePoint.rotation);
-                p.GetComponent<Rigidbody>().AddForce(efiringDirection * eprojVelocity);
-                Destroy(p, eprojLifespan);
-                enemyCanFire = false;
-
-                StartCoroutine("ecooldownFire");
-            
-           
-
         }
     }
 
     IEnumerator ecooldownFire()
     {
+        efireCooldown = false;
         yield return new WaitForSeconds(erof);
         enemyCanFire = true;
     }

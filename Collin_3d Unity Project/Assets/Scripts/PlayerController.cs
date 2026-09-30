@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public float enemyAttackRate = 1;
 
     public Transform InteractSphere;
+    public GameObject playerMovement;
 
     public bool attacking = false;
     public bool sprinting = false;
@@ -49,7 +50,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         jumpRay = new Ray();
         playerCam = Camera.main;
-
+        playerMovement = GameObject.Find("PlayerMovement");
         weaponSlot = transform.GetChild(0);
 
         InteractSphere = GameObject.Find("InteractSphere").transform;
@@ -59,7 +60,9 @@ public class PlayerController : MonoBehaviour
     {
         Quaternion playerRotation = Quaternion.identity;
         playerRotation.y = playerCam.transform.rotation.y;
-        playerRotation.x = playerCam.transform.rotation.x;
+        playerRotation.x = 0;
+        playerRotation.z = 0;
+
         transform.rotation = playerRotation;
     }
 
@@ -69,6 +72,10 @@ public class PlayerController : MonoBehaviour
         worldPos = playerCam.ScreenToWorldPoint(Input.mousePosition);
         transform.LookAt(worldPos);
 
+        Vector3 euler = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(0, euler.y, 0);
+
+        transform.position = playerMovement.transform.position;
 
         InteractSphere.position = transform.position;
         InteractSphere.rotation = transform.rotation;
@@ -219,6 +226,11 @@ public class PlayerController : MonoBehaviour
             health--;
         }
 
+        if (collision.gameObject.tag == "eprojectile")
+        {
+            health--;
+        }
+
         if (collision.gameObject.tag == "FusionHazard")
         {
             health--;
@@ -276,6 +288,7 @@ public class PlayerController : MonoBehaviour
             if (enemyDamage)
             {
                 StopCoroutine("EnemyAttackHitbox");
+                enemyDamage = false;
             }
         }
     }
