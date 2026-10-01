@@ -19,6 +19,7 @@ TagManager:
   - RangedEnemy
   - EnemyGun
   - eprojectile
+  - FS
   layers:
   - Default
   - TransparentFX

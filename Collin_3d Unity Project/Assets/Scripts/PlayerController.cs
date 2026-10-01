@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     Ray jumpRay;
     RaycastHit interactHit;
+    RaycastHit mouseCheck;
     Vector2 moveInput = Vector2.zero;
     Vector3 worldPos;
     Vector3 movePos;
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
     public Transform weaponSlot;
     PlayerInput input;
     Rigidbody rb;
+    Transform firingSurface;
     public GameObject pickupObj;
     public GameObject EnemyAttackHitbox;
     public GameObject fireTo;
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
         weaponSlot = transform.GetChild(0);
 
         InteractSphere = GameObject.Find("InteractSphere").transform;
+        firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
     }
 
@@ -79,8 +82,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        worldPos = playerCam.ScreenToWorldPoint(Input.mousePosition);
-        transform.LookAt(fireTo.transform.position);
+        Physics.Raycast(playerCam.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono), out mouseCheck, 10000000);
+
+        if(mouseCheck.transform != null)
+            worldPos = mouseCheck.point;
+
+        firingSurface.position = transform.position;
+
+        transform.LookAt(worldPos);
 
         Vector3 euler = transform.rotation.eulerAngles;
         transform.rotation = Quaternion.Euler(0, euler.y, 0);
@@ -88,8 +97,9 @@ public class PlayerController : MonoBehaviour
         InteractSphere.position = transform.position;
         InteractSphere.rotation = transform.rotation;
 
+
         fireTo.transform.position = worldPos;
-        fireTo.transform.position = new Vector3(fireTo.transform.position.x, 0, fireTo.transform.position.z);
+        //fireTo.transform.position = new Vector3(fireTo.transform.position.x, transform.position.y, fireTo.transform.position.z);
 
         if (health <= 0)
         {
