@@ -98,7 +98,7 @@ public class Weapon : MonoBehaviour
         {
             clip--;
 
-            GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
+            GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
             p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
             Destroy(p, projLifespan);
             canFire = false;

@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     public float enemyAttackRate = 1;
 
     public Transform InteractSphere;
-    public GameObject playerMovement;
 
     public bool attacking = false;
     public bool sprinting = false;
@@ -33,6 +32,7 @@ public class PlayerController : MonoBehaviour
     RaycastHit interactHit;
     Vector2 moveInput = Vector2.zero;
     Vector3 worldPos;
+    Vector3 movePos;
 
     public Weapon currentWeapon;
 
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     public GameObject pickupObj;
     public GameObject EnemyAttackHitbox;
+    public GameObject fireTo;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -50,10 +51,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         jumpRay = new Ray();
         playerCam = Camera.main;
-        playerMovement = GameObject.Find("PlayerMovement");
         weaponSlot = transform.GetChild(0);
 
         InteractSphere = GameObject.Find("InteractSphere").transform;
+        fireTo = GameObject.Find("fireTo");
     }
 
     private void FixedUpdate()
@@ -64,22 +65,31 @@ public class PlayerController : MonoBehaviour
         playerRotation.z = 0;
 
         transform.rotation = playerRotation;
+        
+        Vector3 tempMove = rb.linearVelocity;
+
+        tempMove.x = moveInput.x * speed;
+        tempMove.z = moveInput.y * speed;
+
+        rb.linearVelocity = (tempMove.x * transform.right) +
+                                (tempMove.y * transform.up) +
+                                (tempMove.z * transform.forward);
     }
 
     // Update is called once per frame
     void Update()
     {
         worldPos = playerCam.ScreenToWorldPoint(Input.mousePosition);
-        transform.LookAt(worldPos);
+        transform.LookAt(fireTo.transform.position);
 
         Vector3 euler = transform.rotation.eulerAngles;
         transform.rotation = Quaternion.Euler(0, euler.y, 0);
 
-        transform.position = playerMovement.transform.position;
-
         InteractSphere.position = transform.position;
         InteractSphere.rotation = transform.rotation;
-        weaponSlot.rotation = transform.rotation;
+
+        fireTo.transform.position = worldPos;
+        fireTo.transform.position = new Vector3(fireTo.transform.position.x, 0, fireTo.transform.position.z);
 
         if (health <= 0)
         {
@@ -92,17 +102,8 @@ public class PlayerController : MonoBehaviour
         if (currentWeapon)
             if (currentWeapon.holdToAttack && attacking)
                 currentWeapon.fire();
-
-        Vector3 tempMove = rb.linearVelocity;
-
-        tempMove.x = moveInput.x * speed;
-        tempMove.z = moveInput.y * speed;
-
-        rb.linearVelocity = (tempMove.x * transform.right) +
-                            (tempMove.y * transform.up) +
-                            (tempMove.z * transform.forward);
     }
-
+    
     public void Move(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -253,7 +254,7 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine("fusionDmgCooldown");
             }
         }
-       
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -304,7 +305,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
+
     IEnumerator fusionDmgCooldown()
     {
         fusionDmg = true;
@@ -320,7 +321,7 @@ public class PlayerController : MonoBehaviour
         enemyDamage = true;
 
         yield return new WaitForSeconds(enemyAttackRate);
-        
+
         health--;
         enemyDamage = false;
     }
