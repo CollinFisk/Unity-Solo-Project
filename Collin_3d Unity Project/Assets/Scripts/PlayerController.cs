@@ -20,8 +20,11 @@ public class PlayerController : MonoBehaviour
     public float fusionDmgInterval = 1;
     public float enemyAttackRate = 1;
 
+    public float interactCooldown = 2;
+
     public Transform InteractSphere;
 
+    public Interactions canInteract;
     public bool attacking = false;
     public bool sprinting = false;
     public bool crouching = false;
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
     public GameObject pickupObj;
     public GameObject EnemyAttackHitbox;
     public GameObject fireTo;
+    public Collider coll;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -58,6 +62,9 @@ public class PlayerController : MonoBehaviour
         InteractSphere = GameObject.Find("InteractSphere").transform;
         firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
+        coll = GameObject.Find("FireSurface").GetComponent<Collider>();
+
+
     }
 
     private void FixedUpdate()
@@ -82,7 +89,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Physics.Raycast(playerCam.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono), out mouseCheck, 10000000);
+        coll.Raycast(playerCam.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono), out mouseCheck, 10000000);
 
         if(mouseCheck.transform != null)
             worldPos = mouseCheck.point;
@@ -96,7 +103,6 @@ public class PlayerController : MonoBehaviour
 
         InteractSphere.position = transform.position;
         InteractSphere.rotation = transform.rotation;
-
 
         fireTo.transform.position = worldPos;
         //fireTo.transform.position = new Vector3(fireTo.transform.position.x, transform.position.y, fireTo.transform.position.z);
@@ -134,9 +140,19 @@ public class PlayerController : MonoBehaviour
             {
                 if (pickupObj.tag == "Weapon")
                 {
-                    pickupObj.GetComponent<Weapon>().equip(this);
+                    if (canInteract)
+                    {
+                        if (currentWeapon)
+                        {
+                            DropWeapon();
+                            pickupObj.GetComponent<Weapon>().equip(this);
+                        }
+                        else
+                        {
+                            pickupObj.GetComponent<Weapon>().equip(this);
+                        }
+                    }
                 }
-                pickupObj = null;
             }
             else if (currentWeapon)
                 Reload();
@@ -193,6 +209,13 @@ public class PlayerController : MonoBehaviour
         }
     }
     */
+
+    public void Unequip(InputAction.CallbackContext context)
+    {
+        if (currentWeapon)
+            if (canInteract)
+                DropWeapon();
+    }
     public void DropWeapon()
     {
         if (currentWeapon)

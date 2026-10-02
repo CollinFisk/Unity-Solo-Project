@@ -42,7 +42,6 @@ public class Weapon : MonoBehaviour
     {
         firePoint = transform.GetChild(0);
     }
-
     public void equip(PlayerController p)
     {
         player = p;
@@ -100,7 +99,7 @@ public class Weapon : MonoBehaviour
 
             GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
             p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
-            Destroy(p, projLifespan);
+                Destroy(p, projLifespan);
             canFire = false;
             StartCoroutine("cooldownFire");
         }
