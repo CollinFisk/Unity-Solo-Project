@@ -12,6 +12,8 @@ public class Weapon : MonoBehaviour
 
     [Header("Object Refrences")]
     public GameObject projectile;
+    public GameObject explodingProjectile;
+    public Transform Explosion;
     public Transform firePoint;
 
     [Header("Meta Attributes")]
@@ -23,6 +25,7 @@ public class Weapon : MonoBehaviour
 
     [Header("Weapon Stats")]
     public float projLifespan;
+    public float expLifespan;
     public float projVelocity;
     public float reloadCooldown;
     public float rof;
@@ -36,6 +39,7 @@ public class Weapon : MonoBehaviour
     public int ammo;
     public int maxAmmo;
     public int ammoRefill;
+    public bool expWeapon;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -97,11 +101,24 @@ public class Weapon : MonoBehaviour
         {
             clip--;
 
-            GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
-            p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
+            if (!expWeapon)
+            {
+                GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
+                p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
                 Destroy(p, projLifespan);
-            canFire = false;
-            StartCoroutine("cooldownFire");
+
+                canFire = false;
+                StartCoroutine("cooldownFire");
+            }
+            if (expWeapon)
+            {
+                GameObject p = Instantiate(explodingProjectile, firePoint.position, transform.rotation);
+                p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
+                Destroy(p, projLifespan);
+
+                canFire = false;
+                StartCoroutine("cooldownFire");
+            }
         }
     }
 
