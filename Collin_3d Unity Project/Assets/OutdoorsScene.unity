@@ -892,8 +892,10 @@ MonoBehaviour:
   agent: {fileID: 405580320}
   player: {fileID: 1483898748}
   detectionRadius: 5
+  enemyHealth: 5
   enemy: {fileID: 405580317}
   EnemyAttackHitbox: {fileID: 1684327624}
+  Explosion: {fileID: 3000224111573854993, guid: ed2a64a2ca3f1cd4f8138e25835e3e63, type: 3}
 --- !u!195 &405580320
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2269,8 +2271,8 @@ GameObject:
   - component: {fileID: 1089846545}
   - component: {fileID: 1089846544}
   - component: {fileID: 1089846543}
-  - component: {fileID: 1089846542}
   - component: {fileID: 1089846547}
+  - component: {fileID: 1089846548}
   m_Layer: 0
   m_Name: Bazooka
   m_TagString: Weapon
@@ -2278,40 +2280,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1089846542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1089846541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97b671b7e7f73614e97323c466422a7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  projectile: {fileID: 0}
-  explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
-  Explosion: {fileID: 3000224111573854993, guid: ed2a64a2ca3f1cd4f8138e25835e3e63, type: 3}
-  firePoint: {fileID: 440397702}
-  canFire: 1
-  holdToAttack: 0
-  reloading: 0
-  weaponID: 3
-  weaponName: Bazooka
-  projLifespan: 1
-  expLifespan: 0.3
-  projVelocity: 100
-  reloadCooldown: 4
-  rof: 1
-  fireModes: 1
-  currentFireMode: 1
-  clip: 1
-  clipSize: 1
-  ammo: 2
-  maxAmmo: 10
-  ammoRefill: 2
-  expWeapon: 1
 --- !u!65 &1089846543
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2433,6 +2401,40 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &1089846548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089846541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90334388077c70a43b523c2531d7d140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bazooka
+  projectile: {fileID: 0}
+  explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
+  Explosion: {fileID: 0}
+  firePoint: {fileID: 440397702}
+  canFire: 1
+  holdToAttack: 1
+  reloading: 0
+  weaponID: 3
+  weaponName: Bazooka
+  projLifespan: 1
+  expLifespan: 0.3
+  projVelocity: 100
+  reloadCooldown: 4
+  rof: 1
+  fireModes: 1
+  currentFireMode: 1
+  clip: 1
+  clipSize: 1
+  ammo: 2
+  maxAmmo: 10
+  ammoRefill: 2
+  expWeapon: 1
 --- !u!1 &1228569072
 GameObject:
   m_ObjectHideFlags: 0
@@ -2506,15 +2508,16 @@ MonoBehaviour:
   player: {fileID: 1483898748}
   efiringDirection: {x: 0, y: 0}
   detectionRadius: 20
+  enemyHealth: 5
   eprojectile: {fileID: 8908039211413820322, guid: 0c42fc27a09d0ce4c88dcbf94f9bec30, type: 3}
   efirePoint: {fileID: 865777814}
   RangedEnemy: {fileID: 1462924518}
   eweaponSlot: {fileID: 606131356}
   EnemyGun: {fileID: 808161728}
-  boxCollider: {fileID: 0}
   eprojLifespan: 1
   eprojVelocity: 100
   erof: 3
+  Explosion: {fileID: 3000224111573854993, guid: ed2a64a2ca3f1cd4f8138e25835e3e63, type: 3}
 --- !u!195 &1462924514
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3031,6 +3034,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 72b2e093-de4d-46ec-81ec-0c2e5865321a
     m_ActionName: 'Player/Pause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1483898748}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Reload
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 05af11cf-a96a-4b6e-9af0-74b1626660b7
+    m_ActionName: 'Player/Reload[/Keyboard/r]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -4333,6 +4352,7 @@ GameObject:
   - component: {fileID: 2142408696}
   - component: {fileID: 2142408695}
   - component: {fileID: 2142408700}
+  - component: {fileID: 2142408701}
   m_Layer: 0
   m_Name: AR
   m_TagString: Weapon
@@ -4497,6 +4517,40 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &2142408701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142408694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f986e43e44ab943409d0b2b260a57510, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AR
+  projectile: {fileID: 8830221767925985334, guid: 6745b8ecafdefe04b8b7c7b3919f197e, type: 3}
+  explodingProjectile: {fileID: 0}
+  Explosion: {fileID: 0}
+  firePoint: {fileID: 777354901}
+  canFire: 1
+  holdToAttack: 1
+  reloading: 0
+  weaponID: 2
+  weaponName: AR
+  projLifespan: 1
+  expLifespan: 0
+  projVelocity: 150
+  reloadCooldown: 3
+  rof: 0.1
+  fireModes: 1
+  currentFireMode: 1
+  clip: 25
+  clipSize: 25
+  ammo: 50
+  maxAmmo: 200
+  ammoRefill: 75
+  expWeapon: 0
 --- !u!1001 &4917287331210206129
 PrefabInstance:
   m_ObjectHideFlags: 0

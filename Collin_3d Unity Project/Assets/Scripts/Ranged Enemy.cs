@@ -10,11 +10,14 @@ public class RangedEnemies : MonoBehaviour
     public bool enemyCanFire = true;
     public bool efireCooldown = true;
 
+
     public NavMeshAgent agent;
     public PlayerController player;
     public Vector2 efiringDirection;
    
     public float detectionRadius = 20f;
+    public float enemyHealth = 5f;
+    public float expTime = 0.3f;
 
     [Header("Object Refrences")]
     public GameObject eprojectile;
@@ -23,16 +26,10 @@ public class RangedEnemies : MonoBehaviour
     public Transform eweaponSlot;
     public Transform EnemyGun;
 
-
-    public Collider boxCollider;
-
     [Header("Weapon Stats")]
     public float eprojLifespan;
     public float eprojVelocity;
     public float erof;
-
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -48,7 +45,9 @@ public class RangedEnemies : MonoBehaviour
 
         EnemyGun.GetComponent<Rigidbody>().isKinematic = true;
         EnemyGun.GetComponent<Collider>().isTrigger = true;
-        boxCollider = RangedEnemy.GetComponent<BoxCollider>();
+
+        Explosion = GameObject.Find("Explosion");
+
     }
 
 
@@ -109,6 +108,33 @@ public class RangedEnemies : MonoBehaviour
             StopCoroutine("ecooldownFire");
             enemyCanFire = false;
             detectionRadius = 15f;
+        }
+    }
+    public GameObject Explosion;
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Projectile")
+        {
+            Destroy(other.gameObject);
+            enemyHealth--;
+        }
+
+        if (other.gameObject.tag == "explodingProjectile")
+        {
+            Destroy(other.gameObject);
+            enemyHealth--;
+                ContactPoint contact = other.GetContact(0);
+
+                Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
+                Vector3 pos = contact.point;
+
+                Instantiate(Explosion, pos, rot);
+                Destroy(Explosion.gameObject, expTime);
+        }
+        if (other.gameObject.tag == "Explosion")
+        {
+            enemyHealth--;
         }
     }
 

@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent agent;
     public PlayerController player;
     public float detectionRadius = 5f;
+    public float enemyHealth = 5f;
+    public float expTime = 0.3f;
 
     public Transform enemy;
     public Transform EnemyAttackHitbox;
@@ -17,6 +19,8 @@ public class Enemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
+        Explosion = GameObject.Find("Explosion");
 
     }
 
@@ -51,21 +55,32 @@ public class Enemy : MonoBehaviour
             detectionRadius = 5f;
         }
     }
-    /*
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-  
-            // In update, make enemy attack and do damage to player while attacking
-        }
-    }
 
-    private void OnCollisionExit(Collision collision)
+    public GameObject Explosion;
+
+    void OnCollisionEnter(Collision other)
     {
-        if (collision.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Projectile")
         {
-            // Stop attacking
+            Destroy(other.gameObject);
+            enemyHealth--;
+        }
+
+        if (other.gameObject.tag == "explodingProjectile")
+        {
+            Destroy(other.gameObject);
+            enemyHealth--;
+                ContactPoint contact = other.GetContact(0);
+
+                Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
+                Vector3 pos = contact.point;
+
+                Instantiate(Explosion, pos, rot);
+                Destroy(Explosion.gameObject, expTime);
+        }
+        if (other.gameObject.tag == "Explosion")
+        {
+            enemyHealth--;
         }
     }
-    */
 }

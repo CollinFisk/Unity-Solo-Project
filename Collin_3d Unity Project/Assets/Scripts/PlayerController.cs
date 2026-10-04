@@ -154,12 +154,10 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            else if (currentWeapon)
-                Reload();
         }
     }
 
-    public void Reload()
+    public void Reload(InputAction.CallbackContext context)
     {
         if (currentWeapon)
             if (!currentWeapon.reloading)
