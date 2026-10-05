@@ -5,7 +5,6 @@ public class Interactions : MonoBehaviour
 {
     public PlayerController player;
 
-    public float interactCooldown = 2;
     public bool canInteract = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,36 +23,28 @@ public class Interactions : MonoBehaviour
     {
         if(other.gameObject.tag == "Weapon")
         {
-            if (canInteract)
-            {
-                player.pickupObj = other.gameObject;
-                canInteract = false;
-                StartCoroutine("intCooldown");
-            }
-            else if (!canInteract)
-            {
+            canInteract = true;
+
+            if (other.gameObject.transform.IsChildOf(player.transform))
                 player.pickupObj = null;
-            }
+            else
+                player.pickupObj = other.gameObject;
+
 
         }
-        if(other.gameObject.tag == "Ammo")
+        if (other.gameObject.tag == "Ammo")
         {
+            canInteract = true;
             player.pickupObj = other.gameObject;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Weapon")
+        if(other.gameObject.tag == "Weapon" || other.gameObject.tag == "Ammo")
         {
+            canInteract = false;
             player.pickupObj = null;
         }
-    }
-
-    IEnumerator intCooldown()
-    {
-        yield return new WaitForSeconds(interactCooldown);
-
-        canInteract = true;
     }
 }

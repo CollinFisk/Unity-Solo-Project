@@ -13,7 +13,6 @@ public class Weapon : MonoBehaviour
     [Header("Object Refrences")]
     public GameObject projectile;
     public GameObject explodingProjectile;
-    public Transform Explosion;
     public Transform firePoint;
 
     [Header("Meta Attributes")]
@@ -25,7 +24,6 @@ public class Weapon : MonoBehaviour
 
     [Header("Weapon Stats")]
     public float projLifespan;
-    public float expLifespan;
     public float projVelocity;
     public float reloadCooldown;
     public float rof;

@@ -9,9 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController player;
 
-    public PlayerController pickupObj;
-
-    public Interactions canInteract;
+    public Interactions interactions;
 
     public Slider healthBar;
 
@@ -19,6 +17,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI clipText;
     public TextMeshProUGUI weaponText;
     public TextMeshProUGUI pickupObjText;
+    public TextMeshProUGUI pausedText;
 
 
     public GameObject pauseMenu;
@@ -42,40 +41,47 @@ public class GameManager : MonoBehaviour
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
         weaponText = GameObject.Find("weaponName").GetComponent<TextMeshProUGUI>();
         pickupObjText = GameObject.Find("PickupObjText").GetComponent<TextMeshProUGUI>();
+        pausedText = GameObject.Find("pausedText").GetComponent<TextMeshProUGUI>();
 
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length + GameObject.FindGameObjectsWithTag("RangedEnemy").Length;
+        interactions = GameObject.FindGameObjectWithTag("InteractSphere").GetComponent<Interactions>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        healthBar.value = player.health;
+        if (!paused)
+        {
+            healthBar.value = player.health;
 
-        if(player.currentWeapon)
-        {
-            ammoText.text = "Ammo: " + player.currentWeapon.ammo + "/" + player.currentWeapon.maxAmmo;
-            clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
-            weaponText.text = player.currentWeapon.weaponName;        
-        }
-        else
-        {
-            weaponText.text = " ";
-            ammoText.text = " ";
-            clipText.text = " ";
-        }
-
-        //Should display the object being hovered over
-        if(pickupObj != null)
-        {
-            if(canInteract)
+            if (player.currentWeapon)
             {
-                pickupObjText.text = "canPickup";
+                ammoText.text = "Ammo: " + player.currentWeapon.ammo + "/" + player.currentWeapon.maxAmmo;
+                clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
+                weaponText.text = player.currentWeapon.weaponName;
             }
+            else
+            {
+                weaponText.text = " ";
+                ammoText.text = " ";
+                clipText.text = " ";
+            }
+
+            if (player.pickupObj != null)
+            {
+                pickupObjText.text = player.pickupObj.name;
+            }
+            else
+                pickupObjText.text = " ";
+        }
+        if (paused)
+        {
+            pausedText.text = "Paused";
         }
         else
-            pickupObjText.text = " ";
-        //is not currently working
+            pausedText.text = " ";
+
 
     }
 

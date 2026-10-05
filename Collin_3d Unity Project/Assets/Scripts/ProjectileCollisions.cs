@@ -4,6 +4,8 @@ public class ProjectileCollisions : MonoBehaviour
 {
     public Transform Explosion;
 
+    public float expTime = 0.3f;
+
     public void Start()
     {
         Explosion = transform.Find("Explosion");
@@ -12,22 +14,15 @@ public class ProjectileCollisions : MonoBehaviour
     {
         if (other.gameObject.tag == "Projectile")
         {
-            Destroy(other.transform);
+            Destroy(other.gameObject);
         }
 
         if (other.gameObject.tag == "explodingProjectile")
         {
-            Destroy(other.transform);
-
-            if (Explosion != null && other.contactCount > 0)
-            {
-                ContactPoint contact = other.GetContact(0);
-
-                Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
-                Vector3 pos = contact.point;
-
-                Instantiate(Explosion, pos, rot);
-            }
+            Destroy(other.gameObject);
+            //position will be where collision happened
+            GameObject p = Instantiate(Explosion, position, transform.rotation);
+            Destroy(p, expTime);
             Destroy(gameObject);
         }
     }

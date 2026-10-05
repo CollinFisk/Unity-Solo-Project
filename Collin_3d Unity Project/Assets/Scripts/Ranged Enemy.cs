@@ -54,6 +54,13 @@ public class RangedEnemies : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (enemyHealth <= 0)
+        {
+            GameObject.Find("GameManager").GetComponent<GameManager>().enemyCount--;
+            isFollowing = false;
+            Destroy(gameObject);
+        }
+
         GetComponent<SphereCollider>().radius = detectionRadius;
         if (isFollowing)
         {
@@ -124,18 +131,8 @@ public class RangedEnemies : MonoBehaviour
         {
             Destroy(other.gameObject);
             enemyHealth--;
-            if (other.gameObject.tag == "explodingProjectile")
-            {
-                Destroy(other.gameObject);
-                enemyHealth--;
-                GameObject p = Instantiate(Explosion, other.collider.ClosestPoint(other.gameObject.transform.position), Quaternion.Inverse(other.gameObject.transform.rotation), transform);
-                //explosions are not working
-                Destroy(p, expTime);
-            }
-            if (other.gameObject.tag == "Explosion")
-            {
-                enemyHealth--;
-            }
+            GameObject p = Instantiate(Explosion, RangedEnemy.position, transform.rotation);
+            Destroy(p, expTime);
         }
         if (other.gameObject.tag == "Explosion")
         {

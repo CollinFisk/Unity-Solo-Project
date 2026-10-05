@@ -105,7 +105,6 @@ public class PlayerController : MonoBehaviour
         InteractSphere.rotation = transform.rotation;
 
         fireTo.transform.position = worldPos;
-        //fireTo.transform.position = new Vector3(fireTo.transform.position.x, transform.position.y, fireTo.transform.position.z);
 
         if (health <= 0)
         {
@@ -146,10 +145,12 @@ public class PlayerController : MonoBehaviour
                         {
                             DropWeapon();
                             pickupObj.GetComponent<Weapon>().equip(this);
-                        }
+                            pickupObj = null;
+                        }   
                         else
                         {
                             pickupObj.GetComponent<Weapon>().equip(this);
+                            pickupObj = null;
                         }
                     }
                 }
@@ -294,14 +295,10 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
-
-        if (other.gameObject.tag == "Weapon")
-            pickupObj = other.gameObject;
     }
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "EnemyAttackHitbox")
-
         {
             if (!enemyDamage)
             {

@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-
+        enemy = GameObject.Find("Enemy").transform;
         Explosion = GameObject.Find("Explosion");
 
     }
@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
         if (enemyHealth <= 0)
         {
             GameObject.Find("GameManager").GetComponent<GameManager>().enemyCount--;
-
+            isFollowing = false;
             Destroy(gameObject);
         }
 
@@ -77,8 +77,7 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             enemyHealth--;
-            GameObject p = Instantiate(Explosion, other.collider.ClosestPoint(other.gameObject.transform.position), Quaternion.Inverse(other.gameObject.transform.rotation), transform);
-            //explosions are not working
+            GameObject p = Instantiate(Explosion, enemy.position, transform.rotation);
             Destroy(p, expTime);
         }
         if (other.gameObject.tag == "Explosion")
