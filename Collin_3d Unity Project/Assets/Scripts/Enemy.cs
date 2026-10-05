@@ -27,6 +27,13 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (enemyHealth <= 0)
+        {
+            GameObject.Find("GameManager").GetComponent<GameManager>().enemyCount--;
+
+            Destroy(gameObject);
+        }
+
         EnemyAttackHitbox.position = enemy.position;
         EnemyAttackHitbox.rotation = enemy.rotation;
 
@@ -70,13 +77,9 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             enemyHealth--;
-                ContactPoint contact = other.GetContact(0);
-
-                Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
-                Vector3 pos = contact.point;
-
-                Instantiate(Explosion, pos, rot);
-                Destroy(Explosion.gameObject, expTime);
+            GameObject p = Instantiate(Explosion, other.collider.ClosestPoint(other.gameObject.transform.position), Quaternion.Inverse(other.gameObject.transform.rotation), transform);
+            //explosions are not working
+            Destroy(p, expTime);
         }
         if (other.gameObject.tag == "Explosion")
         {

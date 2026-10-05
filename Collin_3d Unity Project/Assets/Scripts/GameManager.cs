@@ -1,4 +1,6 @@
 using TMPro;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,11 +9,17 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController player;
 
+    public PlayerController pickupObj;
+
+    public Interactions canInteract;
+
     public Slider healthBar;
 
     public TextMeshProUGUI ammoText;
     public TextMeshProUGUI clipText;
     public TextMeshProUGUI weaponText;
+    public TextMeshProUGUI pickupObjText;
+
 
     public GameObject pauseMenu;
 
@@ -33,6 +41,7 @@ public class GameManager : MonoBehaviour
         ammoText = GameObject.Find("ammoText").GetComponent<TextMeshProUGUI>();
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
         weaponText = GameObject.Find("weaponName").GetComponent<TextMeshProUGUI>();
+        pickupObjText = GameObject.Find("PickupObjText").GetComponent<TextMeshProUGUI>();
 
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length + GameObject.FindGameObjectsWithTag("RangedEnemy").Length;
 
@@ -47,7 +56,7 @@ public class GameManager : MonoBehaviour
         {
             ammoText.text = "Ammo: " + player.currentWeapon.ammo + "/" + player.currentWeapon.maxAmmo;
             clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
-            weaponText.text = player.currentWeapon.weaponName;
+            weaponText.text = player.currentWeapon.weaponName;        
         }
         else
         {
@@ -55,7 +64,22 @@ public class GameManager : MonoBehaviour
             ammoText.text = " ";
             clipText.text = " ";
         }
+
+        //Should display the object being hovered over
+        if(pickupObj != null)
+        {
+            if(canInteract)
+            {
+                pickupObjText.text = "canPickup";
+            }
+        }
+        else
+            pickupObjText.text = " ";
+        //is not currently working
+
     }
+
+    //No pause Object is set up yet
     public void Pause()
     {
         paused = !paused;
