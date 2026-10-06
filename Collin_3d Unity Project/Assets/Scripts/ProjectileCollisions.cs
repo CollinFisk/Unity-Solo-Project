@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class ProjectileCollisions : MonoBehaviour
 {
-    public Transform Explosion;
+    public GameObject Explosion;
 
     public float expTime = 0.3f;
 
     public void Start()
     {
-        Explosion = transform.Find("Explosion");
+        Explosion = GameObject.Find("Explosion");
     }
     void OnCollisionEnter(Collision other)
     {
@@ -20,10 +20,8 @@ public class ProjectileCollisions : MonoBehaviour
         if (other.gameObject.tag == "explodingProjectile")
         {
             Destroy(other.gameObject);
-            //position will be where collision happened
-            GameObject p = Instantiate(Explosion, position, transform.rotation);
+            GameObject p = Instantiate(Explosion, other.collider.ClosestPoint(other.gameObject.transform.position), transform.rotation);
             Destroy(p, expTime);
-            Destroy(gameObject);
         }
     }
 }

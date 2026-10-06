@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             enemyHealth--;
-            GameObject p = Instantiate(Explosion, enemy.position, transform.rotation);
+            GameObject p = Instantiate(Explosion, other.collider.ClosestPoint(other.gameObject.transform.position), transform.rotation);
             Destroy(p, expTime);
         }
         if (other.gameObject.tag == "Explosion")

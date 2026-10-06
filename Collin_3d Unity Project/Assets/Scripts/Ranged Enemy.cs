@@ -42,7 +42,6 @@ public class RangedEnemies : MonoBehaviour
 
         EnemyGun.SetPositionAndRotation(eweaponSlot.position, eweaponSlot.rotation);
         EnemyGun.SetParent(eweaponSlot);
-
         EnemyGun.GetComponent<Rigidbody>().isKinematic = true;
         EnemyGun.GetComponent<Collider>().isTrigger = true;
 
@@ -131,7 +130,7 @@ public class RangedEnemies : MonoBehaviour
         {
             Destroy(other.gameObject);
             enemyHealth--;
-            GameObject p = Instantiate(Explosion, RangedEnemy.position, transform.rotation);
+            GameObject p = Instantiate(Explosion, other.collider.ClosestPoint(other.gameObject.transform.position), transform.rotation);
             Destroy(p, expTime);
         }
         if (other.gameObject.tag == "Explosion")

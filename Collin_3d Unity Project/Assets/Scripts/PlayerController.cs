@@ -249,6 +249,11 @@ public class PlayerController : MonoBehaviour
             health--;
         }
 
+        if (collision.gameObject.tag == "Explosion")
+        {
+            health = health - 3;
+        }
+
         if (collision.gameObject.tag == "RangedEnemy")
         {
             health--;
