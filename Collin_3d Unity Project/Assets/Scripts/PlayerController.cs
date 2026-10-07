@@ -267,6 +267,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "eprojectile")
         {
             health--;
+            Destroy (collision.gameObject);
         }
 
         if (collision.gameObject.tag == "FusionHazard")

@@ -7,14 +7,11 @@ TagManager:
   - Weapon
   - Projectile
   - Ammo
-  - Undefined
   - Hazard
   - InteractSphere
   - Enemy
-  - EnemyAttackRange
   - Health
   - FusionHazard
-  - EnemyAttack
   - EnemyAttackHitbox
   - RangedEnemy
   - EnemyGun
@@ -22,6 +19,9 @@ TagManager:
   - FS
   - Explosion
   - explodingProjectile
+  - MapPiece
+  - Door
+  - EndDoor
   layers:
   - Default
   - TransparentFX

@@ -18,11 +18,14 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI weaponText;
     public TextMeshProUGUI pickupObjText;
     public TextMeshProUGUI pausedText;
+    public TextMeshProUGUI gameOverText;
 
 
     public GameObject pauseMenu;
+    public GameObject door;
 
     public bool paused = false;
+    public bool gameOver = false;
     public bool enemiesGone = false;
 
     public int enemyCount = 0;
@@ -32,26 +35,29 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
-      //  pauseMenu = GameObject.FindGameObjectWithTag("Pause");
-      //  pauseMenu.SetActive(false);
-
         healthBar = GameObject.Find("healthBar").GetComponent<Slider>();
 
         ammoText = GameObject.Find("ammoText").GetComponent<TextMeshProUGUI>();
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
         weaponText = GameObject.Find("weaponName").GetComponent<TextMeshProUGUI>();
         pickupObjText = GameObject.Find("PickupObjText").GetComponent<TextMeshProUGUI>();
+        
         pausedText = GameObject.Find("pausedText").GetComponent<TextMeshProUGUI>();
+
+        gameOverText = GameObject.Find("gameOverText").GetComponent<TextMeshProUGUI>();
+
 
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length + GameObject.FindGameObjectsWithTag("RangedEnemy").Length;
         interactions = GameObject.FindGameObjectWithTag("InteractSphere").GetComponent<Interactions>();
+        door = GameObject.FindWithTag("EndDoor");
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!paused)
+        if (!paused || !gameOver)
         {
             healthBar.value = player.health;
 
@@ -82,23 +88,39 @@ public class GameManager : MonoBehaviour
         else
             pausedText.text = " ";
 
+        if (gameOver)
+        {
 
+        }
+
+        if (enemyCount <= 0)
+        {
+            Destroy(door.gameObject);
+        }
+        if (player.health <= 0)
+        {
+            gameOver = true;
+            Time.timeScale = 0;
+        }
     }
 
     //No pause Object is set up yet
     public void Pause()
     {
-        paused = !paused;
+        if (!gameOver)
+        { 
+            paused = !paused;
 
-        pauseMenu.SetActive(paused);
+            pauseMenu.SetActive(paused);
 
-        if (paused)
-        {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
+            if (paused)
+            {
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
         }
     }
     /*

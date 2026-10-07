@@ -20,6 +20,7 @@ public class RangedEnemies : MonoBehaviour
     public float expTime = 0.3f;
 
     [Header("Object Refrences")]
+    public GameObject Explosion;
     public GameObject eprojectile;
     public Transform efirePoint;
     public Transform RangedEnemy;
@@ -30,7 +31,7 @@ public class RangedEnemies : MonoBehaviour
     public float eprojLifespan;
     public float eprojVelocity;
     public float erof;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -41,12 +42,8 @@ public class RangedEnemies : MonoBehaviour
         efiringDirection = RangedEnemy.forward;
 
         EnemyGun.SetPositionAndRotation(eweaponSlot.position, eweaponSlot.rotation);
-        EnemyGun.SetParent(eweaponSlot);
         EnemyGun.GetComponent<Rigidbody>().isKinematic = true;
         EnemyGun.GetComponent<Collider>().isTrigger = true;
-
-        Explosion = GameObject.Find("Explosion");
-
     }
 
 
@@ -116,8 +113,6 @@ public class RangedEnemies : MonoBehaviour
             detectionRadius = 15f;
         }
     }
-    public GameObject Explosion;
-
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Projectile")

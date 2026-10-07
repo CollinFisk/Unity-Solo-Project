@@ -7,10 +7,6 @@ public class ExplosiveObject : MonoBehaviour
     public float expTime = 0.3f;
     public int ObjectHealth;
 
-    public void Start()
-    {
-        Explosion = GameObject.Find("Explosion");
-    }
     private void Update()
     {
         if (ObjectHealth <= 0)
