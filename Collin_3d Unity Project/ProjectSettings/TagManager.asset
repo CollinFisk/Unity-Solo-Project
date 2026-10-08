@@ -24,6 +24,7 @@ TagManager:
   - EndDoor
   - collectionReq
   - Button
+  - GameManager
   layers:
   - Default
   - TransparentFX

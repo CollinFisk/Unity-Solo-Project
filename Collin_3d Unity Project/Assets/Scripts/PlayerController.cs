@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform InteractSphere;
     public Interactions canInteract;
+    public Interactions interactions;
     public bool attacking = false;
     public bool sprinting = false;
     public bool crouching = false;
@@ -60,6 +61,8 @@ public class PlayerController : MonoBehaviour
         weaponSlot = transform.GetChild(0);
 
         InteractSphere = GameObject.Find("InteractSphere").transform;
+        interactions = InteractSphere.GetComponent<Interactions>();
+
         firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
         coll = GameObject.Find("FireSurface").GetComponent<Collider>();
@@ -137,48 +140,49 @@ public class PlayerController : MonoBehaviour
         {
             if (pickupObj)
             {
-                if (pickupObj.tag == "Weapon")
+                if (interactions.canInteract)
                 {
-                    if (canInteract)
+                    if (pickupObj.tag == "Weapon")
                     {
                         if (currentWeapon)
                         {
                             DropWeapon();
                             pickupObj.GetComponent<Weapon>().equip(this);
                             pickupObj = null;
-                        }   
+                        }
                         else
                         {
                             pickupObj.GetComponent<Weapon>().equip(this);
                             pickupObj = null;
                         }
                     }
-                }
-                if (pickupObj.tag == "Ammo" && currentWeapon && currentWeapon.ammo < currentWeapon.maxAmmo)
-                {
-                    int refillAmt = currentWeapon.ammo + currentWeapon.ammoRefill;
-
-                    if (refillAmt >= currentWeapon.maxAmmo)
+                    else if (pickupObj.tag == "Ammo" && currentWeapon && currentWeapon.ammo < currentWeapon.maxAmmo)
                     {
-                        currentWeapon.ammo = currentWeapon.maxAmmo;
-                    }
-                    else
-                        currentWeapon.ammo += currentWeapon.ammoRefill;
+                        int refillAmt = currentWeapon.ammo + currentWeapon.ammoRefill;
 
-                    Destroy(pickupObj);
-                }
-                if (pickupObj.tag == "collectionReq")
-                {
-                    Destroy(pickupObj);
-                    foundKey = true;
-                }
-                if (pickupObj.tag == "Door")
-                {
-                    Destroy(pickupObj);
-                }
-                if (pickupObj.tag == "Button")
-                {
-                    pickupObj.GetComponent<Door>().doorButtonPressed = true;
+                        if (refillAmt >= currentWeapon.maxAmmo)
+                        {
+                            currentWeapon.ammo = currentWeapon.maxAmmo;
+                        }
+                        else
+                            currentWeapon.ammo += currentWeapon.ammoRefill;
+
+                        Destroy(pickupObj);
+                    }
+                    else if (pickupObj.tag == "collectionReq")
+                    {
+                        Destroy(pickupObj);
+                        foundKey = true;
+                    }
+                    else if (pickupObj.tag == "Door")
+                    {
+                        Destroy(pickupObj);
+                        interactions.canInteract = false;
+                    }
+                    else if (pickupObj.tag == "Button")
+                    {
+                        pickupObj.GetComponent<Door>().doorButtonPressed = true;
+                    }
                 }
             }
         }
@@ -341,14 +345,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Weapon")
-            pickupObj = null;
-
         if (other.gameObject.tag == "EnemyAttackHitbox")
         {
             if (enemyDamage)
             {
-                StopCoroutine("EnemyAttackHitbox");
+                StopCoroutine("EnemyAttackRate");
                 enemyDamage = false;
             }
         }

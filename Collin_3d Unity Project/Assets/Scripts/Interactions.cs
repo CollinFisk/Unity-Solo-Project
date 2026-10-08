@@ -1,10 +1,11 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Interactions : MonoBehaviour
 {
     public PlayerController player;
-    public bool canInteract = true;
+    public bool canInteract = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,6 +49,10 @@ public class Interactions : MonoBehaviour
             {
                 canInteract = true;
             }
+            else
+            {
+                canInteract = false;
+            }
         }
         if (other.gameObject.tag == "Button")
         {
@@ -56,6 +61,10 @@ public class Interactions : MonoBehaviour
             {
                 canInteract = true;
             }
+        }
+        if (other.gameObject == null)
+        {
+            canInteract = false;
         }
     }
 

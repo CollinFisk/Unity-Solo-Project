@@ -75,6 +75,7 @@ public class Door : MonoBehaviour
             if (doorButtonPressed)
             {
                 DoorOpen = true;
+                Destroy(GetComponent<Door>());
             }
         }
 
