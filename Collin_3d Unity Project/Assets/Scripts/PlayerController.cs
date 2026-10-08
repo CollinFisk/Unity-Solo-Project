@@ -289,11 +289,6 @@ public class PlayerController : MonoBehaviour
             health--;
         }
 
-        if (collision.gameObject.tag == "EnemyAttack")
-        {
-            health--;
-        }
-
         if (collision.gameObject.tag == "eprojectile")
         {
             health--;
@@ -349,7 +344,7 @@ public class PlayerController : MonoBehaviour
         {
             if (enemyDamage)
             {
-                StopCoroutine("EnemyAttackRate");
+                StopCoroutine("enemyDmgCooldown");
                 enemyDamage = false;
             }
         }

@@ -31,6 +31,10 @@ public class Enemy : MonoBehaviour
             GameObject.Find("GameManager").GetComponent<GameManager>().enemyCount--;
             isFollowing = false;
             Destroy(gameObject);
+            if(player.enemyDamage)
+            {
+                player.StopCoroutine("enemyDmgCooldown");
+            }
         }
 
         EnemyAttackHitbox.position = enemy.position;

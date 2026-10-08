@@ -38,6 +38,8 @@ public class Weapon : MonoBehaviour
     public int maxAmmo;
     public int ammoRefill;
     public bool expWeapon;
+    public bool shotgunWeapon;
+    public bool regularWeapon;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -99,7 +101,7 @@ public class Weapon : MonoBehaviour
         {
             clip--;
 
-            if (!expWeapon)
+            if (!regularWeapon)
             {
                 GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
                 p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
@@ -114,6 +116,26 @@ public class Weapon : MonoBehaviour
                 p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
                 Destroy(p, projLifespan);
 
+                canFire = false;
+                StartCoroutine("cooldownFire");
+            }
+            if (shotgunWeapon)
+            {
+                //repeat nine times
+                for (int i = 0; i < 5; i++)
+                {
+                    Quaternion ShotgunShotRotation = Quaternion.identity;
+                    ShotgunShotRotation.y = Random.Range(-1f, 1f);
+                    ShotgunShotRotation.x = 0;
+                    ShotgunShotRotation.z = 0;
+                    ShotgunShotRotation.w = 0;
+                    firePoint.rotation = ShotgunShotRotation;
+                    GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
+
+
+                    p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
+                    Destroy(p, projLifespan);
+                }
                 canFire = false;
                 StartCoroutine("cooldownFire");
             }
