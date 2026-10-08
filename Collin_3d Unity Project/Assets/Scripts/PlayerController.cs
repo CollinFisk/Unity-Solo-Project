@@ -23,13 +23,13 @@ public class PlayerController : MonoBehaviour
     public float interactCooldown = 2;
 
     public Transform InteractSphere;
-
     public Interactions canInteract;
     public bool attacking = false;
     public bool sprinting = false;
     public bool crouching = false;
     public bool fusionDmg = false;
     public bool enemyDamage = false;
+    public bool foundKey = false;
 
     Ray jumpRay;
     RaycastHit interactHit;
@@ -153,6 +153,32 @@ public class PlayerController : MonoBehaviour
                             pickupObj = null;
                         }
                     }
+                }
+                if (pickupObj.tag == "Ammo" && currentWeapon && currentWeapon.ammo < currentWeapon.maxAmmo)
+                {
+                    int refillAmt = currentWeapon.ammo + currentWeapon.ammoRefill;
+
+                    if (refillAmt >= currentWeapon.maxAmmo)
+                    {
+                        currentWeapon.ammo = currentWeapon.maxAmmo;
+                    }
+                    else
+                        currentWeapon.ammo += currentWeapon.ammoRefill;
+
+                    Destroy(pickupObj);
+                }
+                if (pickupObj.tag == "collectionReq")
+                {
+                    Destroy(pickupObj);
+                    foundKey = true;
+                }
+                if (pickupObj.tag == "Door")
+                {
+                    Destroy(pickupObj);
+                }
+                if (pickupObj.tag == "Button")
+                {
+                    pickupObj.GetComponent<Door>().doorButtonPressed = true;
                 }
             }
         }

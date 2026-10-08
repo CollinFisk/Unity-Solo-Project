@@ -37,8 +37,9 @@ public class RangedEnemies : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         eweaponSlot = RangedEnemy.GetChild(0);
+        EnemyGun = eweaponSlot.GetChild(0);
         efirePoint = EnemyGun.GetChild(0);
-        RangedEnemy = GameObject.FindWithTag("RangedEnemy").transform;
+        RangedEnemy = transform;
         efiringDirection = RangedEnemy.forward;
 
         EnemyGun.SetPositionAndRotation(eweaponSlot.position, eweaponSlot.rotation);
@@ -64,10 +65,10 @@ public class RangedEnemies : MonoBehaviour
         }
 
         var pos = player.transform.position;
-        RangedEnemy.LookAt(pos);
+        transform.LookAt(pos);
 
-        Vector3 euler = RangedEnemy.rotation.eulerAngles;
-        RangedEnemy.rotation = Quaternion.Euler(0, euler.y, 0);
+        Vector3 euler = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(0, euler.y, 0);
 
 
 
@@ -75,7 +76,7 @@ public class RangedEnemies : MonoBehaviour
         {
 
             GameObject p = Instantiate(eprojectile, efirePoint.position, efirePoint.rotation);
-            p.GetComponent<Rigidbody>().AddForce(RangedEnemy.transform.forward * eprojVelocity);
+            p.GetComponent<Rigidbody>().AddForce(transform.forward * eprojVelocity);
             Destroy(p, eprojLifespan);
             efireCooldown = true;
             enemyCanFire = false;

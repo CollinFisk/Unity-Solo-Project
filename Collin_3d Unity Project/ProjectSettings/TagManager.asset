@@ -22,6 +22,8 @@ TagManager:
   - MapPiece
   - Door
   - EndDoor
+  - collectionReq
+  - Button
   layers:
   - Default
   - TransparentFX

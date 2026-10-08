@@ -4,7 +4,6 @@ using UnityEngine;
 public class Interactions : MonoBehaviour
 {
     public PlayerController player;
-
     public bool canInteract = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,12 +15,12 @@ public class Interactions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Weapon")
+        if (other.gameObject.tag == "Weapon")
         {
             canInteract = true;
 
@@ -29,19 +28,40 @@ public class Interactions : MonoBehaviour
                 player.pickupObj = null;
             else
                 player.pickupObj = other.gameObject;
-
-
         }
+
         if (other.gameObject.tag == "Ammo")
         {
             canInteract = true;
             player.pickupObj = other.gameObject;
         }
+
+        if (other.gameObject.tag == "collectionReq")
+        {
+            canInteract = true;
+            player.pickupObj = other.gameObject;
+        }
+        if (other.gameObject.tag == "Door")
+        {
+            player.pickupObj = other.gameObject;
+            if (other.gameObject.GetComponent<Door>().noReq == true)
+            {
+                canInteract = true;
+            }
+        }
+        if (other.gameObject.tag == "Button")
+        {
+            player.pickupObj = other.gameObject;
+            if (other.gameObject.GetComponent<Door>().buttonReq == true)
+            {
+                canInteract = true;
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Weapon" || other.gameObject.tag == "Ammo")
+        if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Ammo" || other.gameObject.tag == "collectionReq" || other.gameObject.tag == "Door" || other.gameObject.tag == "Button")
         {
             canInteract = false;
             player.pickupObj = null;

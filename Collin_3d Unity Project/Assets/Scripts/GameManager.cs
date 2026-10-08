@@ -22,13 +22,18 @@ public class GameManager : MonoBehaviour
 
 
     public GameObject pauseMenu;
-    public GameObject door;
+    public GameObject endDoor;
 
     public bool paused = false;
     public bool gameOver = false;
     public bool enemiesGone = false;
 
     public int enemyCount = 0;
+    public int startEnemyCount = 0;
+    public int enemiesKilled = 0;
+
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -47,9 +52,10 @@ public class GameManager : MonoBehaviour
         gameOverText = GameObject.Find("gameOverText").GetComponent<TextMeshProUGUI>();
 
 
-        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length + GameObject.FindGameObjectsWithTag("RangedEnemy").Length;
+        startEnemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length + GameObject.FindGameObjectsWithTag("RangedEnemy").Length;
+        enemyCount = startEnemyCount;
         interactions = GameObject.FindGameObjectWithTag("InteractSphere").GetComponent<Interactions>();
-        door = GameObject.FindWithTag("EndDoor");
+        endDoor = GameObject.FindWithTag("EndDoor");
 
 
     }
@@ -90,18 +96,22 @@ public class GameManager : MonoBehaviour
 
         if (gameOver)
         {
-
+            gameOverText.text = "GAME OVER";
         }
+        else
+            gameOverText.text = " ";
 
         if (enemyCount <= 0)
         {
-            Destroy(door.gameObject);
+            Destroy(endDoor);
         }
         if (player.health <= 0)
         {
             gameOver = true;
             Time.timeScale = 0;
         }
+
+        enemiesKilled = startEnemyCount - enemyCount;
     }
 
     //No pause Object is set up yet
