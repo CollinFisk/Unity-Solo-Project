@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
 
     public NavMeshAgent agent;
     public PlayerController player;
-    public float detectionRadius = 5f;
+    public float detectionRadius = 8f;
     public float enemyHealth = 5f;
     public float expTime = 0.3f;
 
@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Player")
         {
             isFollowing = true;
-            detectionRadius = 10f;
+            detectionRadius = 12f;
         }
     }
 
@@ -62,7 +62,7 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Player")
         {
             isFollowing = false;
-            detectionRadius = 5f;
+            detectionRadius = 8f;
         }
     }
 

@@ -101,10 +101,6 @@ public class GameManager : MonoBehaviour
         else
             gameOverText.text = " ";
 
-        if (enemyCount <= 0)
-        {
-            Destroy(endDoor);
-        }
         if (player.health <= 0)
         {
             gameOver = true;
@@ -142,7 +138,7 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(levelID);
     }
 
-    public void LoadNextNevel()
+    public void LoadNextLevel()
     {
         LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }

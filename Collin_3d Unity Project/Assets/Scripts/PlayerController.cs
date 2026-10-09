@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public Transform InteractSphere;
     public Interactions canInteract;
     public Interactions interactions;
+    public GameManager gameManager;
     public bool attacking = false;
     public bool sprinting = false;
     public bool crouching = false;
@@ -306,6 +307,11 @@ public class PlayerController : MonoBehaviour
 
             Destroy(collision.gameObject);
         }
+        /*
+        if (collision.gameObject.tag == "EndDoor")
+        {
+            gameManager.LoadNextLevel();
+        }*/
     }
 
     private void OnCollisionStay(Collision collision)
