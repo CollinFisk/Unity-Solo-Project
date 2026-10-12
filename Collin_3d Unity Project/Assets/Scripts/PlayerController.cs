@@ -67,8 +67,6 @@ public class PlayerController : MonoBehaviour
         firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
         coll = GameObject.Find("FireSurface").GetComponent<Collider>();
-
-
     }
 
     private void FixedUpdate()
@@ -184,6 +182,11 @@ public class PlayerController : MonoBehaviour
                     {
                         pickupObj.GetComponent<Door>().doorButtonPressed = true;
                     }
+                    else if (pickupObj.tag == "Health")
+                    {
+                        Destroy(pickupObj);
+                        health = maxHealth;
+                    }
                 }
             }
         }
@@ -293,7 +296,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "eprojectile")
         {
             health--;
-            Destroy (collision.gameObject);
+            Destroy(collision.gameObject);
         }
 
         if (collision.gameObject.tag == "FusionHazard")
@@ -303,15 +306,10 @@ public class PlayerController : MonoBehaviour
 
         if (collision.gameObject.tag == "Health" && health < maxHealth)
         {
-            health++;
+            health = maxHealth;
 
             Destroy(collision.gameObject);
         }
-        /*
-        if (collision.gameObject.tag == "EndDoor")
-        {
-            gameManager.LoadNextLevel();
-        }*/
     }
 
     private void OnCollisionStay(Collision collision)
@@ -328,9 +326,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "LevelEnd")
+        if (other.gameObject.tag == "EndDoor")
         {
-            SceneManager.LoadScene(0);
+            GameObject.Find("GameManager").GetComponent<GameManager>().LoadNextLevel();
         }
     }
     private void OnTriggerStay(Collider other)

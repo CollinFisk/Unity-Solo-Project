@@ -74,14 +74,13 @@ public class Door : MonoBehaviour
         {
             if (doorButtonPressed)
             {
-                DoorOpen = true;
-                Destroy(GetComponent<Door>());
+                if (door != null)
+                {
+                    Destroy(door.gameObject);
+                    door = null;
+                }
             }
         }
-
-
-
-
 
         if (DoorOpen)
         {
@@ -95,17 +94,17 @@ public class Door : MonoBehaviour
         {
             if (other.gameObject.tag == "Projectile")
             {
-                DoorOpen = true;
+                doorButtonPressed = true;
             }
 
             if (other.gameObject.tag == "explodingProjectile")
             {
-                DoorOpen = true;
+                doorButtonPressed = true;
 
             }
             if (other.gameObject.tag == "Explosion")
             {
-                DoorOpen = true;
+                doorButtonPressed = true;
             }
         }
         if (destroyDoorReq)

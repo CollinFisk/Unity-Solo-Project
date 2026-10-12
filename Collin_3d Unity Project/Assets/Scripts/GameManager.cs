@@ -55,9 +55,6 @@ public class GameManager : MonoBehaviour
         startEnemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length + GameObject.FindGameObjectsWithTag("RangedEnemy").Length;
         enemyCount = startEnemyCount;
         interactions = GameObject.FindGameObjectWithTag("InteractSphere").GetComponent<Interactions>();
-        endDoor = GameObject.FindWithTag("EndDoor");
-
-
     }
 
     // Update is called once per frame
@@ -129,10 +126,10 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    /*
+
     public void LoadLevel(int levelID)
     {
-        if (levelID >= SceneManager.sceneCountInBuildSettings)
+        if (levelID > SceneManager.sceneCountInBuildSettings)
             Debug.Log("Level ID is too high: " + levelID);
         else
             SceneManager.LoadScene(levelID);
@@ -152,5 +149,4 @@ public class GameManager : MonoBehaviour
     {
         Application.Quit();
     }
-    */
 }
