@@ -81,13 +81,13 @@ public class Weapon : MonoBehaviour
 
         if (ammo < reloadCount)
         {
-            clip += ammo;
-            ammo = 0;
+            clip += reloadCount; //ammo;
+            //ammo = 0;
         }
         else
         {
             clip += reloadCount;
-            ammo -= reloadCount;
+            //ammo -= reloadCount;
         }
 
         reloading = true;

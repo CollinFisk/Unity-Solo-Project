@@ -60,20 +60,20 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!paused || !gameOver)
+        if (!gameOver)
         {
             healthBar.value = player.health;
 
             if (player.currentWeapon)
             {
-                ammoText.text = "Ammo: " + player.currentWeapon.ammo + "/" + player.currentWeapon.maxAmmo;
+                //ammoText.text = "Ammo: " + player.currentWeapon.ammo + "/" + player.currentWeapon.maxAmmo;
                 clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
                 weaponText.text = player.currentWeapon.weaponName;
             }
             else
             {
                 weaponText.text = " ";
-                ammoText.text = " ";
+                //ammoText.text = " ";
                 clipText.text = " ";
             }
 
@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
         enemiesKilled = startEnemyCount - enemyCount;
     }
 
-    //No pause Object is set up yet
     public void Pause()
     {
         if (!gameOver)
