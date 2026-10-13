@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6185795183278071928}
   - component: {fileID: 2567071634304247548}
   - component: {fileID: 8989034979351435071}
+  - component: {fileID: 811270152248739746}
   m_Layer: 0
   m_Name: MapPiece
   m_TagString: MapPiece
@@ -112,3 +113,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &811270152248739746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016461304539066441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a7ad928eb5ab8419a0ef249f440e1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileCollisions
+  Explosion: {fileID: 3000224111573854993, guid: ed2a64a2ca3f1cd4f8138e25835e3e63, type: 3}
+  expTime: 0.3

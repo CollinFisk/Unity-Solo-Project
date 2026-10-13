@@ -4,16 +4,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Slider = UnityEngine.UI.Slider;
 
 public class GameManager : MonoBehaviour
 {
     public PlayerController player;
+    public Boss1 boss;
 
     public Interactions interactions;
 
     public Slider healthBar;
+    public Slider bossHealthBar;
 
-    public TextMeshProUGUI ammoText;
+
     public TextMeshProUGUI clipText;
     public TextMeshProUGUI weaponText;
     public TextMeshProUGUI pickupObjText;
@@ -41,8 +45,9 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
         healthBar = GameObject.Find("healthBar").GetComponent<Slider>();
+        bossHealthBar = GameObject.Find("bossHealthBar").GetComponent<Slider>();
 
-        ammoText = GameObject.Find("ammoText").GetComponent<TextMeshProUGUI>();
+
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
         weaponText = GameObject.Find("weaponName").GetComponent<TextMeshProUGUI>();
         pickupObjText = GameObject.Find("PickupObjText").GetComponent<TextMeshProUGUI>();
@@ -53,8 +58,9 @@ public class GameManager : MonoBehaviour
 
 
         startEnemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length + GameObject.FindGameObjectsWithTag("RangedEnemy").Length;
-        enemyCount = startEnemyCount;
         interactions = GameObject.FindGameObjectWithTag("InteractSphere").GetComponent<Interactions>();
+
+        enemyCount = startEnemyCount;
     }
 
     // Update is called once per frame
@@ -63,17 +69,16 @@ public class GameManager : MonoBehaviour
         if (!gameOver)
         {
             healthBar.value = player.health;
+            bossHealthBar.value = boss.bossHealth;
 
             if (player.currentWeapon)
             {
-                //ammoText.text = "Ammo: " + player.currentWeapon.ammo + "/" + player.currentWeapon.maxAmmo;
                 clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
                 weaponText.text = player.currentWeapon.weaponName;
             }
             else
             {
                 weaponText.text = " ";
-                //ammoText.text = " ";
                 clipText.text = " ";
             }
 
@@ -104,8 +109,17 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
         }
 
-        enemiesKilled = startEnemyCount - enemyCount;
+        if (boss.isFollowing)
+        {
+            bossHealthBar.gameObject.SetActive(true);
+        }
+        else
+        {
+            bossHealthBar.gameObject.SetActive(false);
+        }
+            enemiesKilled = startEnemyCount - enemyCount;
     }
+        
 
     public void Pause()
     {
