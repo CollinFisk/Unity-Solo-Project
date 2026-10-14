@@ -45,8 +45,10 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
         healthBar = GameObject.Find("healthBar").GetComponent<Slider>();
-        bossHealthBar = GameObject.Find("bossHealthBar").GetComponent<Slider>();
-
+        if (boss != null)
+        {
+            bossHealthBar = GameObject.Find("bossHealthBar").GetComponent<Slider>();
+        }
 
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
         weaponText = GameObject.Find("weaponName").GetComponent<TextMeshProUGUI>();
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
         interactions = GameObject.FindGameObjectWithTag("InteractSphere").GetComponent<Interactions>();
 
         enemyCount = startEnemyCount;
+
     }
 
     // Update is called once per frame
@@ -69,7 +72,10 @@ public class GameManager : MonoBehaviour
         if (!gameOver)
         {
             healthBar.value = player.health;
-            bossHealthBar.value = boss.bossHealth;
+            if (boss != null)
+            {
+                bossHealthBar.value = boss.bossHealth;
+            }
 
             if (player.currentWeapon)
             {
@@ -108,18 +114,27 @@ public class GameManager : MonoBehaviour
             gameOver = true;
             Time.timeScale = 0;
         }
-
-        if (boss.isFollowing)
+        if (boss != null)
         {
-            bossHealthBar.gameObject.SetActive(true);
+            if (boss.isFollowing)
+            {
+                bossHealthBar.gameObject.SetActive(true);
+            }
+            else
+            {
+                bossHealthBar.gameObject.SetActive(false);
+            }
         }
-        else
+        if (boss == null)
         {
             bossHealthBar.gameObject.SetActive(false);
         }
-            enemiesKilled = startEnemyCount - enemyCount;
+        enemiesKilled = startEnemyCount - enemyCount;
+
+        MainMenu();
+        LoadLevel(1);
     }
-        
+
 
     public void Pause()
     {

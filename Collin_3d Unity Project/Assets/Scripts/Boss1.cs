@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,12 +12,16 @@ public class Boss1
     public float detectionRadius = 8f;
     public float bossHealth = 100f;
     public float expTime = 0.3f;
+    public float summonTime = 5f;
+
+    public bool canSummon = true;
 
     public GameObject bossDrop;
     public GameObject summonRangedEnemy;
     public GameObject summonEnemy;
     public Transform enemy;
     public Transform EnemyAttackHitbox;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,24 +42,25 @@ public class Boss1
             Destroy(gameObject);
             GameObject p = Instantiate(bossDrop, transform.position, transform.rotation);
             p.GetComponent<Rigidbody>();
+            StopCoroutine("Summons");
             if (player.enemyDamage)
             {
                 player.StopCoroutine("enemyDmgCooldown");
             }
         }
-        if (bossHealth == 75)
+        else if (bossHealth <= 75 && canSummon)
         {
-            GameObject p = Instantiate(summonRangedEnemy, transform.position, transform.rotation);
+            StartCoroutine ("Summons");
         }
 
-        if (bossHealth == 50)
+        else if (bossHealth <= 50 && bossHealth >= 25)
         {
-            GameObject p = Instantiate(summonEnemy, transform.position, transform.rotation);
+            summonTime = 4f;
         }
 
-        if (bossHealth == 25)
+        else if (bossHealth <= 25)
         {
-            GameObject p = Instantiate(summonEnemy, transform.position, transform.rotation);
+            summonTime = 3f;
         }
 
         EnemyAttackHitbox.position = enemy.position;
@@ -107,5 +113,29 @@ public class Boss1
         {
             bossHealth--;
         }
+    }
+
+    IEnumerator Summons()
+    {
+        canSummon = false;
+
+        yield return new WaitForSeconds(summonTime);
+
+        if (bossHealth <= 75)
+        {
+            GameObject p = Instantiate(summonEnemy, transform.position, transform.rotation);
+        }
+
+        if (bossHealth <= 50)
+        {
+            GameObject p = Instantiate(summonRangedEnemy, transform.position, transform.rotation);
+        }
+
+        if (bossHealth <= 25)
+        {
+            GameObject p = Instantiate(summonEnemy, transform.position, transform.rotation);
+        }
+
+        canSummon = true;
     }
 }
