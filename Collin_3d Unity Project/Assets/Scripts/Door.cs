@@ -77,6 +77,7 @@ public class Door : MonoBehaviour
                 if (door != null)
                 {
                     Destroy(door.gameObject);
+                    DoorOpen = true;
                     door = null;
                 }
             }
@@ -84,7 +85,7 @@ public class Door : MonoBehaviour
 
         if (DoorOpen)
         {
-            Destroy(door.gameObject);
+            Destroy(transform.gameObject);
         }
     }
 

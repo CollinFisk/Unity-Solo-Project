@@ -36,10 +36,6 @@ public class GameManager : MonoBehaviour
     public int startEnemyCount = 0;
     public int enemiesKilled = 0;
 
-
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -63,7 +59,6 @@ public class GameManager : MonoBehaviour
         interactions = GameObject.FindGameObjectWithTag("InteractSphere").GetComponent<Interactions>();
 
         enemyCount = startEnemyCount;
-
     }
 
     // Update is called once per frame
@@ -131,8 +126,6 @@ public class GameManager : MonoBehaviour
         }
         enemiesKilled = startEnemyCount - enemyCount;
 
-        MainMenu();
-        LoadLevel(1);
     }
 
 
