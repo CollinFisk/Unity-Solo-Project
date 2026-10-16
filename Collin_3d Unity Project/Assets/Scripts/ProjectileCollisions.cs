@@ -23,5 +23,9 @@ public class ProjectileCollisions : MonoBehaviour
             GameObject p = Instantiate(Explosion, other.collider.ClosestPoint(other.gameObject.transform.position), transform.rotation);
             Destroy(p, expTime);
         }
+        if (other.gameObject.tag == "eprojectile")
+        {
+            Destroy(other.gameObject);
+        }
     }
 }

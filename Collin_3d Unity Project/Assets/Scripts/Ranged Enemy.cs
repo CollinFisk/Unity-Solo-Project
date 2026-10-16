@@ -15,7 +15,7 @@ public class RangedEnemies : MonoBehaviour
     public PlayerController player;
     public Vector2 efiringDirection;
    
-    public float detectionRadius = 20f;
+    public float detectionRadius = 15f;
     public float enemyHealth = 5f;
     public float expTime = 0.3f;
 

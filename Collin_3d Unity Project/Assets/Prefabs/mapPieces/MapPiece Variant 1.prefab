@@ -59,5 +59,25 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9016461304539066441, guid: 7ec2fd62abe202e48b603ed6000b7e21, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4990194255357060139}
   m_SourcePrefab: {fileID: 100100000, guid: 7ec2fd62abe202e48b603ed6000b7e21, type: 3}
+--- !u!1 &5292087577901926273 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9016461304539066441, guid: 7ec2fd62abe202e48b603ed6000b7e21, type: 3}
+  m_PrefabInstance: {fileID: 3769972844964952008}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4990194255357060139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5292087577901926273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da04eafe93b9f4e4fab38b43e25b03f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KillCollision
