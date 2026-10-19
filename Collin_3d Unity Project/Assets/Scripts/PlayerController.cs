@@ -33,12 +33,9 @@ public class PlayerController : MonoBehaviour
     public bool enemyDamage = false;
     public bool foundKey = false;
 
-    Ray jumpRay;
-    RaycastHit interactHit;
     RaycastHit mouseCheck;
     Vector2 moveInput = Vector2.zero;
     Vector3 worldPos;
-    Vector3 movePos;
 
     public Weapon currentWeapon;
 
@@ -57,12 +54,12 @@ public class PlayerController : MonoBehaviour
     {
         input = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
-        jumpRay = new Ray();
         playerCam = Camera.main;
         weaponSlot = transform.GetChild(0);
 
         InteractSphere = GameObject.Find("InteractSphere").transform;
         interactions = InteractSphere.GetComponent<Interactions>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
@@ -77,48 +74,52 @@ public class PlayerController : MonoBehaviour
         playerRotation.z = 0;
 
         transform.rotation = playerRotation;
-        
+
         Vector3 tempMove = rb.linearVelocity;
 
         tempMove.x = moveInput.x * speed;
         tempMove.z = moveInput.y * speed;
 
         rb.linearVelocity = (tempMove.x * transform.right) +
-                                (tempMove.y * transform.up) +
-                                (tempMove.z * transform.forward);
+                            (tempMove.y * transform.up) +
+                            (tempMove.z * transform.forward);
     }
 
     // Update is called once per frame
     void Update()
     {
         coll.Raycast(playerCam.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono), out mouseCheck, 10000000);
-
-        if(mouseCheck.transform != null)
-            worldPos = mouseCheck.point;
-
         firingSurface.position = transform.position;
 
-        transform.LookAt(worldPos);
+        worldPos = mouseCheck.point;
 
-        Vector3 euler = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(0, euler.y, 0);
+        fireTo.transform.position = worldPos;
 
         InteractSphere.position = transform.position;
         InteractSphere.rotation = transform.rotation;
 
-        fireTo.transform.position = worldPos;
-
-        if (health <= 0)
+        if (gameManager.gameOver != true)
         {
+            if (mouseCheck.transform != null)
+            {
+                transform.LookAt(worldPos);     
+                Vector3 euler = transform.rotation.eulerAngles;
+                transform.rotation = Quaternion.Euler(0, euler.y, 0);
 
+                if (currentWeapon)
+                {
+                    weaponSlot.transform.LookAt(worldPos);
+
+                    Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
+                    weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
+
+                    if (currentWeapon.holdToAttack && attacking)
+                    {
+                        currentWeapon.fire();
+                    }
+                }
+            }
         }
-
-        jumpRay.origin = transform.position;
-        jumpRay.direction = -transform.up;
-
-        if (currentWeapon)
-            if (currentWeapon.holdToAttack && attacking)
-                currentWeapon.fire();
     }
     
     public void Move(InputAction.CallbackContext context)
@@ -126,13 +127,6 @@ public class PlayerController : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
     }
 
-    /*
-    public void Jump()
-    {
-        if (Physics.Raycast(jumpRay, jumpDetectDistance))
-            rb.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
-    }
-    */
     public void Interact(InputAction.CallbackContext context)
     {
         if (context.ReadValueAsButton())
@@ -201,7 +195,7 @@ public class PlayerController : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
-        if (currentWeapon)
+        if (currentWeapon && gameManager.gameOver == false)
         {
             if (currentWeapon.holdToAttack)
             {

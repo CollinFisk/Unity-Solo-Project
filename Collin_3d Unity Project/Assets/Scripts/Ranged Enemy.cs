@@ -115,7 +115,6 @@ public class RangedEnemies : MonoBehaviour
         {
             isFollowing = false;
             StopCoroutine("ecooldownFire");
-            enemyCanFire = false;
             detectionRadius = 15f;
         }
     }

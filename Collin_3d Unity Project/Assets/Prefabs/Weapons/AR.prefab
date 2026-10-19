@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1023461671875388718}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.71613, y: -0, z: -0, w: 0.69796693}
-  m_LocalPosition: {x: 0.05, y: 1.051, z: 0.05}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1.54691, y: 1.5460539, z: 0.8411938}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4574954939545523049}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &4573076176065326256
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +164,8 @@ MonoBehaviour:
   projectile: {fileID: 8830221767925985334, guid: 6745b8ecafdefe04b8b7c7b3919f197e, type: 3}
   explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
   firePoint: {fileID: 943954895764360880}
-  canFire: 1
+  fireTo: {fileID: 0}
+  canFire: 0
   holdToAttack: 1
   reloading: 0
   weaponID: 2
@@ -181,6 +182,8 @@ MonoBehaviour:
   maxAmmo: 200
   ammoRefill: 75
   expWeapon: 0
+  shotgunWeapon: 0
+  regularWeapon: 0
 --- !u!54 &4600846122883183372
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -223,6 +226,7 @@ MonoBehaviour:
   projectile: {fileID: 8830221767925985334, guid: 6745b8ecafdefe04b8b7c7b3919f197e, type: 3}
   explodingProjectile: {fileID: 0}
   firePoint: {fileID: 943954895764360880}
+  fireTo: {fileID: 0}
   canFire: 1
   holdToAttack: 1
   reloading: 0
@@ -240,3 +244,5 @@ MonoBehaviour:
   maxAmmo: 200
   ammoRefill: 75
   expWeapon: 0
+  shotgunWeapon: 0
+  regularWeapon: 0

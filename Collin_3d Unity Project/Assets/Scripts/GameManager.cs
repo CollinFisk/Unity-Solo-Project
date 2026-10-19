@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
 
 
         startEnemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length + GameObject.FindGameObjectsWithTag("RangedEnemy").Length;
-        interactions = GameObject.FindGameObjectWithTag("InteractSphere").GetComponent<Interactions>();
 
         enemyCount = startEnemyCount;
     }
@@ -69,7 +68,7 @@ public class GameManager : MonoBehaviour
             healthBar.value = player.health;
             if (boss != null)
             {
-                bossHealthBar.value = boss.bossHealth;
+                bossHealthBar.value = boss.enemyHealth;
             }
 
             if (player.currentWeapon)

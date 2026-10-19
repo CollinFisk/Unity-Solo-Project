@@ -132,7 +132,8 @@ MonoBehaviour:
   projectile: {fileID: 8830221767925985334, guid: 6745b8ecafdefe04b8b7c7b3919f197e, type: 3}
   explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
   firePoint: {fileID: 9033854846196995637}
-  canFire: 1
+  fireTo: {fileID: 0}
+  canFire: 0
   holdToAttack: 1
   reloading: 0
   weaponID: 1
@@ -149,6 +150,8 @@ MonoBehaviour:
   maxAmmo: 100
   ammoRefill: 25
   expWeapon: 0
+  shotgunWeapon: 0
+  regularWeapon: 0
 --- !u!54 &3854495257577533022
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -200,10 +203,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4037912788878848266}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.71613, y: -0, z: -0, w: 0.69796693}
-  m_LocalPosition: {x: -0.07, y: 0.99, z: 0.01}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 2.2124383, y: 2.212438, z: 2.212438}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8015983751785850856}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}

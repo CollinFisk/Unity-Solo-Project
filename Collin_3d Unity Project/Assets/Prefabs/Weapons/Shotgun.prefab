@@ -129,7 +129,8 @@ MonoBehaviour:
   projectile: {fileID: 8830221767925985334, guid: 6745b8ecafdefe04b8b7c7b3919f197e, type: 3}
   explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
   firePoint: {fileID: 8219959559729650601}
-  canFire: 1
+  fireTo: {fileID: 0}
+  canFire: 0
   holdToAttack: 1
   reloading: 0
   weaponID: 0

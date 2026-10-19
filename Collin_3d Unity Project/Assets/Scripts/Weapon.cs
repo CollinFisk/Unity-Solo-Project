@@ -14,9 +14,8 @@ public class Weapon : MonoBehaviour
     public GameObject projectile;
     public GameObject explodingProjectile;
     public Transform firePoint;
-
     [Header("Meta Attributes")]
-    public bool canFire = true;
+    public bool canFire = false;
     public bool holdToAttack = true;
     public bool reloading = false;
     public int weaponID;
@@ -52,8 +51,9 @@ public class Weapon : MonoBehaviour
 
         player.currentWeapon = this;
 
-        transform.SetPositionAndRotation(player.weaponSlot.position, player.weaponSlot.rotation);
+        transform.position = player.weaponSlot.position;
         transform.SetParent(player.weaponSlot);
+        canFire = true;
 
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().isTrigger = true;
@@ -103,8 +103,8 @@ public class Weapon : MonoBehaviour
 
             if (!regularWeapon)
             {
-                GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
-                p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
+                GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
+                p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                 Destroy(p, projLifespan);
 
                 canFire = false;
@@ -112,8 +112,8 @@ public class Weapon : MonoBehaviour
             }
             if (expWeapon)
             {
-                GameObject p = Instantiate(explodingProjectile, firePoint.position, transform.rotation);
-                p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
+                GameObject p = Instantiate(explodingProjectile, firePoint.position, firePoint.rotation);
+                p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                 Destroy(p, projLifespan);
 
                 canFire = false;
@@ -133,7 +133,7 @@ public class Weapon : MonoBehaviour
                     GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
 
 
-                    p.GetComponent<Rigidbody>().AddForce(player.transform.forward * projVelocity);
+                    p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                     Destroy(p, projLifespan);
                 }
                 canFire = false;

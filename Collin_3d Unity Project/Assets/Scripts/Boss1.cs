@@ -10,7 +10,7 @@ public class Boss1
     public NavMeshAgent agent;
     public PlayerController player;
     public float detectionRadius = 8f;
-    public float bossHealth = 100f;
+    public float enemyHealth = 100f;
     public float expTime = 0.3f;
     public float summonTime = 5f;
 
@@ -35,7 +35,7 @@ public class Boss1
     // Update is called once per frame
     void Update()
     {
-        if (bossHealth <= 0)
+        if (enemyHealth <= 0)
         {
             GameObject.Find("GameManager").GetComponent<GameManager>().enemyCount--;
             isFollowing = false;
@@ -48,17 +48,17 @@ public class Boss1
                 player.StopCoroutine("enemyDmgCooldown");
             }
         }
-        else if (bossHealth <= 75 && canSummon)
+        else if (enemyHealth <= 75 && canSummon)
         {
             StartCoroutine ("Summons");
         }
 
-        else if (bossHealth <= 50 && bossHealth >= 25)
+        else if (enemyHealth <= 50 && enemyHealth >= 25)
         {
             summonTime = 4f;
         }
 
-        else if (bossHealth <= 25)
+        else if (enemyHealth <= 25)
         {
             summonTime = 3f;
         }
@@ -99,19 +99,19 @@ public class Boss1
         if (other.gameObject.tag == "Projectile")
         {
             Destroy(other.gameObject);
-            bossHealth--;
+            enemyHealth--;
         }
 
         if (other.gameObject.tag == "explodingProjectile")
         {
             Destroy(other.gameObject);
-            bossHealth--;
+            enemyHealth--;
             GameObject p = Instantiate(Explosion, other.collider.ClosestPoint(other.gameObject.transform.position), transform.rotation);
             Destroy(p, expTime);
         }
         if (other.gameObject.tag == "Explosion")
         {
-            bossHealth--;
+            enemyHealth--;
         }
     }
 
@@ -121,17 +121,17 @@ public class Boss1
 
         yield return new WaitForSeconds(summonTime);
 
-        if (bossHealth <= 75)
+        if (enemyHealth <= 75)
         {
             GameObject p = Instantiate(summonEnemy, transform.position, transform.rotation);
         }
 
-        if (bossHealth <= 50)
+        if (enemyHealth <= 50)
         {
             GameObject p = Instantiate(summonRangedEnemy, transform.position, transform.rotation);
         }
 
-        if (bossHealth <= 25)
+        if (enemyHealth <= 25)
         {
             GameObject p = Instantiate(summonEnemy, transform.position, transform.rotation);
         }

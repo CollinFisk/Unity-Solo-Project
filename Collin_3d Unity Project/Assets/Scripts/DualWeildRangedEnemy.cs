@@ -136,7 +136,6 @@ public class DualWeildRangedEnemy : MonoBehaviour
         {
             isFollowing = false;
             StopCoroutine("ecooldownFire");
-            enemyCanFire = false;
             detectionRadius = 15f;
         }
     }

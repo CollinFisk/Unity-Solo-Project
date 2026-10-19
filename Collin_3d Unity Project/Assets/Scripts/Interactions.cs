@@ -82,7 +82,7 @@ public class Interactions : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Ammo" || other.gameObject.tag == "collectionReq" || other.gameObject.tag == "Door" || other.gameObject.tag == "Button")
+        if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Ammo" || other.gameObject.tag == "collectionReq" || other.gameObject.tag == "Door" || other.gameObject.tag == "Button" || other.gameObject.tag == "Health")
         {
             canInteract = false;
             player.pickupObj = null;
