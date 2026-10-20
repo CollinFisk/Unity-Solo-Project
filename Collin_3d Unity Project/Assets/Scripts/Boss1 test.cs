@@ -12,8 +12,29 @@ public class Boss1test : Enemy
     public GameObject summonRangedEnemy;
     public GameObject summonEnemy;
 
-    void Update()
+    
+    public new void Update()
     {
+        if (enemyHealth <= 0)
+        {
+            GameObject.Find("GameManager").GetComponent<GameManager>().enemyCount--;
+            isFollowing = false;
+            Destroy(gameObject);
+            if (player.enemyDamage)
+            {
+                player.StopCoroutine("enemyDmgCooldown");
+            }
+        }
+
+        EnemyAttackHitbox.position = enemy.position;
+        EnemyAttackHitbox.rotation = enemy.rotation;
+
+        GetComponent<SphereCollider>().radius = detectionRadius;
+        if (isFollowing)
+        {
+            agent.destination = player.transform.position;
+        }
+
         if (enemyHealth <= 75 && canSummon)
         {
             StartCoroutine("Summons");

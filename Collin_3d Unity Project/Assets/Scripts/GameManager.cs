@@ -10,7 +10,7 @@ using Slider = UnityEngine.UI.Slider;
 public class GameManager : MonoBehaviour
 {
     public PlayerController player;
-    public Boss1 boss;
+    public Boss1test boss;
 
     public Interactions interactions;
 

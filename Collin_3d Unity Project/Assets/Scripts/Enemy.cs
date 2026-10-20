@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     public Transform EnemyAttackHitbox;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         if (enemyHealth <= 0)
         {
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
 
     public GameObject Explosion;
 
-    void OnCollisionEnter(Collision other)
+    public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Projectile")
         {

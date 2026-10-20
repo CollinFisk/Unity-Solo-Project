@@ -39,6 +39,7 @@ public class Interactions : MonoBehaviour
         if (other.gameObject.tag == "Health")
         {
             player.pickupObj = other.gameObject;
+
             if (player.health < player.maxHealth)
             {
                 canInteract=true;
@@ -49,7 +50,7 @@ public class Interactions : MonoBehaviour
             }
         }
 
-            if (other.gameObject.tag == "collectionReq")
+        if (other.gameObject.tag == "collectionReq")
         {
             canInteract = true;
             player.pickupObj = other.gameObject;

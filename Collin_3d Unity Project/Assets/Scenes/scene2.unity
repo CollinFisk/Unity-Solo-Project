@@ -12603,10 +12603,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   player: {fileID: 1483898748}
-  boss: {fileID: 8617410714446456647}
+  boss: {fileID: 8617410714446456648}
   interactions: {fileID: 0}
   healthBar: {fileID: 554551341}
-  bossHealthBar: {fileID: 0}
+  bossHealthBar: {fileID: 340568707}
   clipText: {fileID: 704059738}
   weaponText: {fileID: 318347536}
   pickupObjText: {fileID: 342454830}
@@ -66026,7 +66026,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.00001
+  m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &6781798015544900902
 Transform:
@@ -66058,7 +66058,7 @@ GameObject:
   - component: {fileID: 7931798809108690535}
   - component: {fileID: 6300783754894734366}
   - component: {fileID: 8617410714446456646}
-  - component: {fileID: 8617410714446456647}
+  - component: {fileID: 8617410714446456648}
   m_Layer: 0
   m_Name: Boss1
   m_TagString: Enemy
@@ -66185,7 +66185,7 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8617410714446456647
+--- !u!114 &8617410714446456648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -66194,23 +66194,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7472931675411430403}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442d64d94389ef3438146af605642ce5, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f39a09c58912784bae643a6e29b4e70, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Boss1
+  m_EditorClassIdentifier: Assembly-CSharp::Boss1test
   isFollowing: 0
   agent: {fileID: 8617410714446456646}
   player: {fileID: 0}
   detectionRadius: 5
   enemyHealth: 100
   expTime: 0.3
+  enemy: {fileID: 6781798015544900902}
+  EnemyAttackHitbox: {fileID: 5388673248488420593}
+  Explosion: {fileID: 167443753634200938, guid: 28ee42ed8e88ab4449a1c8f747427905, type: 3}
   summonTime: 5
-  canSummon: 1
+  canSummon: 0
   bossDrop: {fileID: 296770968095886054, guid: 2db3526de8b2d7348b33647a7f491288, type: 3}
   summonRangedEnemy: {fileID: 7522845360749658382, guid: e4792062acbe1424595f6f280a373452, type: 3}
   summonEnemy: {fileID: 2546203141756219774, guid: d4027ba765454b44f81a8c36c36e3c8c, type: 3}
-  enemy: {fileID: 6781798015544900902}
-  EnemyAttackHitbox: {fileID: 5388673248488420593}
-  Explosion: {fileID: 3000224111573854993, guid: ed2a64a2ca3f1cd4f8138e25835e3e63, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
