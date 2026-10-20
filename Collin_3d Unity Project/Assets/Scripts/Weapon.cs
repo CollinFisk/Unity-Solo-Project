@@ -51,7 +51,7 @@ public class Weapon : MonoBehaviour
 
         player.currentWeapon = this;
 
-        transform.position = player.weaponSlot.position;
+        transform.SetPositionAndRotation(player.weaponSlot.position, player.weaponSlot.rotation);
         transform.SetParent(player.weaponSlot);
         canFire = true;
 
