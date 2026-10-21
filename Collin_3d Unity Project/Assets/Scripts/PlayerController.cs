@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public float interactDistance = 5f;
     public float fusionDmgInterval = 1f;
     public float enemyAttackRate = 1f;
-    public float dashStrength = 50f;
+    public float dashStrength;
     public float dashCooldownSpeed = 2f;
     public float dashDuration = 0.2f;
 
@@ -47,10 +47,12 @@ public class PlayerController : MonoBehaviour
     public Transform weaponSlot;
     PlayerInput input;
     Rigidbody rb;
+    Rigidbody playerMovementrb;
     Transform firingSurface;
     public GameObject pickupObj;
     public GameObject EnemyAttackHitbox;
     public GameObject fireTo;
+    public Transform playerMovement;
     public Collider coll;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -58,12 +60,17 @@ public class PlayerController : MonoBehaviour
     {
         input = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
+
         playerCam = Camera.main;
         weaponSlot = transform.GetChild(0);
 
         InteractSphere = GameObject.Find("InteractSphere").transform;
         interactions = InteractSphere.GetComponent<Interactions>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        playerMovement = GameObject.Find("playerMovement").GetComponent<Transform>();
+        playerMovementrb = GameObject.Find("playerMovement").GetComponent<Rigidbody>();
+
 
         firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
@@ -72,22 +79,21 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Quaternion playerRotation = Quaternion.identity;
-        playerRotation.y = playerCam.transform.rotation.y;
-        playerRotation.x = 0;
-        playerRotation.z = 0;
+        Quaternion playerMovementRotation = Quaternion.identity;
+        playerMovementRotation.y = playerCam.transform.rotation.y;
+        playerMovementRotation.x = 0;
+        playerMovementRotation.z = 0;
+        playerMovement.rotation = playerMovementRotation;
 
-        transform.rotation = playerRotation;
         if (dashing == false)
         {
-            Vector3 tempMove = rb.linearVelocity;
+            Vector3 tempMove = playerMovementrb.linearVelocity;
 
             tempMove.x = moveInput.x * speed;
             tempMove.z = moveInput.y * speed;
-
-            rb.linearVelocity = (tempMove.x * transform.right) +
-                                (tempMove.y * transform.up) +
-                                (tempMove.z * transform.forward);
+            rb.linearVelocity = (tempMove.x * playerMovement.right) +
+                                //(tempMove.y * playerMovement.up) +
+                                (tempMove.z * playerMovement.forward);
         }
     }
 
@@ -254,62 +260,69 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Ammo" && currentWeapon && currentWeapon.ammo < currentWeapon.maxAmmo)
+        if (!dashing)
         {
-            int refillAmt = currentWeapon.ammo + currentWeapon.ammoRefill;
 
-            if (refillAmt >= currentWeapon.maxAmmo)
+
+            if (collision.gameObject.tag == "Ammo" && currentWeapon && currentWeapon.ammo < currentWeapon.maxAmmo)
             {
-                currentWeapon.ammo = currentWeapon.maxAmmo;
+                int refillAmt = currentWeapon.ammo + currentWeapon.ammoRefill;
+
+                if (refillAmt >= currentWeapon.maxAmmo)
+                {
+                    currentWeapon.ammo = currentWeapon.maxAmmo;
+                }
+                else
+                    currentWeapon.ammo += currentWeapon.ammoRefill;
+
+                Destroy(collision.gameObject);
             }
-            else
-                currentWeapon.ammo += currentWeapon.ammoRefill;
 
-            Destroy(collision.gameObject);
-        }
+            if (collision.gameObject.tag == "Hazard")
+            {
+                health--;
+            }
 
-        if (collision.gameObject.tag == "Hazard")
-        {
-            health--;
-        }
+            if (collision.gameObject.tag == "Enemy")
+            {
+                health--;
+            }
 
-        if (collision.gameObject.tag == "Enemy")
-        {
-            health--;
-        }
+            if (collision.gameObject.tag == "Explosion")
+            {
+                health = health - 3;
+            }
 
-        if (collision.gameObject.tag == "Explosion")
-        {
-            health = health - 3;
-        }
+            if (collision.gameObject.tag == "RangedEnemy")
+            {
+                health--;
+            }
 
-        if (collision.gameObject.tag == "RangedEnemy")
-        {
-            health--;
-        }
+            if (collision.gameObject.tag == "FusionHazard")
+            {
+                health--;
+            }
 
-        if (collision.gameObject.tag == "eprojectile")
-        {
-            health--;
-            Destroy(collision.gameObject);
-        }
+            if (collision.gameObject.tag == "eprojectile")
+            {
+                health--;
+                Destroy(collision.gameObject);
+            }
 
-        if (collision.gameObject.tag == "Projectile")
-        {
-            health = health - 5;
-            Destroy(collision.gameObject);
-        }
+            if (collision.gameObject.tag == "Projectile")
+            {
+                health = health - 5;
+                Destroy(collision.gameObject);
+            }
 
-        if (collision.gameObject.tag == "FusionHazard")
-        {
-            health--;
-        }
+            if (collision.gameObject.tag == "Health" && health < maxHealth)
+            {
+                health = maxHealth;
 
-        if (collision.gameObject.tag == "Health" && health < maxHealth)
-        {
-            health = maxHealth;
-
-            Destroy(collision.gameObject);
+                Destroy(collision.gameObject);
+            }
+            if (collision.gameObject == playerMovement)
+                collision=null;
         }
     }
 
@@ -392,7 +405,7 @@ public class PlayerController : MonoBehaviour
         dashing = true;
 
         Vector3 currentVelocity = rb.linearVelocity;
-        rb.linearVelocity = new Vector3(currentVelocity.x, 0.01f, currentVelocity.z);
+        rb.linearVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
 
         Vector3 dashDirection = transform.forward;
 
