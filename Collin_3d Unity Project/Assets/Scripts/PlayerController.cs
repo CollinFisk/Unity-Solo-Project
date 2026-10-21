@@ -17,10 +17,13 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 5.0f;
     public float jumpDetectDistance = 1.1f;
     public float interactDistance = 5f;
-    public float fusionDmgInterval = 1;
-    public float enemyAttackRate = 1;
+    public float fusionDmgInterval = 1f;
+    public float enemyAttackRate = 1f;
+    public float dashStrength = 50f;
+    public float dashCooldownSpeed = 2f;
+    public float dashDuration = 0.2f;
 
-    public float interactCooldown = 2;
+    public float interactCooldown = 2f;
 
     public Transform InteractSphere;
     public Interactions canInteract;
@@ -28,10 +31,11 @@ public class PlayerController : MonoBehaviour
     public GameManager gameManager;
     public bool attacking = false;
     public bool sprinting = false;
-    public bool crouching = false;
+    public bool dashing = false;
     public bool fusionDmg = false;
     public bool enemyDamage = false;
     public bool foundKey = false;
+    public bool canDash = true;
 
     RaycastHit mouseCheck;
     Vector2 moveInput = Vector2.zero;
@@ -74,15 +78,17 @@ public class PlayerController : MonoBehaviour
         playerRotation.z = 0;
 
         transform.rotation = playerRotation;
+        if (dashing == false)
+        {
+            Vector3 tempMove = rb.linearVelocity;
 
-        Vector3 tempMove = rb.linearVelocity;
+            tempMove.x = moveInput.x * speed;
+            tempMove.z = moveInput.y * speed;
 
-        tempMove.x = moveInput.x * speed;
-        tempMove.z = moveInput.y * speed;
-
-        rb.linearVelocity = (tempMove.x * transform.right) +
-                            (tempMove.y * transform.up) +
-                            (tempMove.z * transform.forward);
+            rb.linearVelocity = (tempMove.x * transform.right) +
+                                (tempMove.y * transform.up) +
+                                (tempMove.z * transform.forward);
+        }
     }
 
     // Update is called once per frame
@@ -98,11 +104,11 @@ public class PlayerController : MonoBehaviour
         InteractSphere.position = transform.position;
         InteractSphere.rotation = transform.rotation;
 
-        if (gameManager.gameOver != true)
+        if (gameManager.gameOver != true && gameManager.paused != true)
         {
             if (mouseCheck.transform != null)
             {
-                transform.LookAt(worldPos);     
+                transform.LookAt(worldPos);
                 Vector3 euler = transform.rotation.eulerAngles;
                 transform.rotation = Quaternion.Euler(0, euler.y, 0);
 
@@ -121,7 +127,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
+
     public void Move(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -195,7 +201,7 @@ public class PlayerController : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
-        if (currentWeapon && gameManager.gameOver == false)
+        if (currentWeapon && gameManager.gameOver == false && gameManager.paused == false)
         {
             if (currentWeapon.holdToAttack)
             {
@@ -222,20 +228,15 @@ public class PlayerController : MonoBehaviour
             sprinting = false;
         }
     }
-    /*
-    public void Crouch(InputAction.CallbackContext context)
+
+    public void Dash(InputAction.CallbackContext context)
     {
-        if (!crouching)
+        if (!dashing && canDash)
         {
-            transform <ScaleMode>(1, 0.5, 1);
-            crouching = true;
-        }
-        else
-        {
-            crouching = false; 
+            StartCoroutine("dashCooldown");
         }
     }
-    */
+
 
     public void Unequip(InputAction.CallbackContext context)
     {
@@ -384,5 +385,23 @@ public class PlayerController : MonoBehaviour
 
         health--;
         enemyDamage = false;
+    }
+    IEnumerator dashCooldown()
+    {
+        canDash = false;
+        dashing = true;
+
+        Vector3 currentVelocity = rb.linearVelocity;
+        rb.linearVelocity = new Vector3(currentVelocity.x, 0.01f, currentVelocity.z);
+
+        Vector3 dashDirection = transform.forward;
+
+        rb.AddForce(dashDirection * dashStrength, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(dashDuration);
+        dashing = false;
+
+        yield return new WaitForSeconds(dashCooldownSpeed);
+        canDash = true;
     }
 }
