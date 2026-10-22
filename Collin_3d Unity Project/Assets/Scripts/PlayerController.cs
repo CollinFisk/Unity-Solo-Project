@@ -84,16 +84,11 @@ public class PlayerController : MonoBehaviour
         playerMovementRotation.x = 0;
         playerMovementRotation.z = 0;
         playerMovement.rotation = playerMovementRotation;
-
-        if (dashing == false)
+        if (!dashing)
         {
-            Vector3 tempMove = playerMovementrb.linearVelocity;
+            Vector3 horizontalMovement = (moveInput.x * speed * playerMovement.right) + (moveInput.y * speed * playerMovement.forward);
 
-            tempMove.x = moveInput.x * speed;
-            tempMove.z = moveInput.y * speed;
-            rb.linearVelocity = (tempMove.x * playerMovement.right) +
-                                //(tempMove.y * playerMovement.up) +
-                                (tempMove.z * playerMovement.forward);
+            rb.linearVelocity = new Vector3(horizontalMovement.x, rb.linearVelocity.y, horizontalMovement.z);
         }
     }
 

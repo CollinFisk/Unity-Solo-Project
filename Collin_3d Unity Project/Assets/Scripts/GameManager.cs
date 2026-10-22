@@ -10,9 +10,7 @@ using Slider = UnityEngine.UI.Slider;
 public class GameManager : MonoBehaviour
 {
     public PlayerController player;
-    public Boss1test boss;
-
-    public Interactions interactions;
+    public Boss1 boss;
 
     public Slider healthBar;
     public Slider bossHealthBar;
@@ -26,7 +24,6 @@ public class GameManager : MonoBehaviour
 
 
     public GameObject pauseMenu;
-    public GameObject endDoor;
 
     public bool paused = false;
     public bool gameOver = false;

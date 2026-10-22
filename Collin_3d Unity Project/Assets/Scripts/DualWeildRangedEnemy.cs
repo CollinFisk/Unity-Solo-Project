@@ -73,22 +73,22 @@ public class DualWeildRangedEnemy : MonoBehaviour
         if (isFollowing)
         {
             agent.destination = player.transform.position;
+
+
+            var pos = player.transform.position;
+            EnemyGun.transform.LookAt(pos);
+            EnemyGun2.transform.LookAt(pos);
+            dualWeildRangedEnemy.transform.LookAt(pos);
+
+            Vector3 gunEuler = EnemyGun.rotation.eulerAngles;
+            EnemyGun.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
+
+            Vector3 gunEuler2 = EnemyGun2.rotation.eulerAngles;
+            EnemyGun2.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler2.y, gunEuler2.z);
+
+            Vector3 Euler = dualWeildRangedEnemy.rotation.eulerAngles;
+            dualWeildRangedEnemy.rotation = Quaternion.Euler(0, Euler.y, 0);
         }
-
-        var pos = player.transform.position;
-        EnemyGun.transform.LookAt(pos);
-        EnemyGun2.transform.LookAt(pos);
-        dualWeildRangedEnemy.transform.LookAt(pos);
-
-        Vector3 gunEuler = EnemyGun.rotation.eulerAngles;
-        EnemyGun.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
-
-        Vector3 gunEuler2 = EnemyGun2.rotation.eulerAngles;
-        EnemyGun2.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler2.y, gunEuler2.z);
-        
-        Vector3 Euler = dualWeildRangedEnemy.rotation.eulerAngles;
-        dualWeildRangedEnemy.rotation = Quaternion.Euler(0, Euler.y, 0);
-
         if (isFollowing && enemyCanFire)
         {
             if (shot1)
@@ -135,7 +135,6 @@ public class DualWeildRangedEnemy : MonoBehaviour
         if (other.tag == "Player")
         {
             isFollowing = false;
-            StopCoroutine("ecooldownFire");
             detectionRadius = 15f;
         }
     }

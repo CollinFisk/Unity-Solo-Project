@@ -58,6 +58,7 @@ public class Interactions : MonoBehaviour
         if (other.gameObject.tag == "Door")
         {
             player.pickupObj = other.gameObject;
+            if (other.gameObject.GetComponent<Door>() != null)
             if (other.gameObject.GetComponent<Door>().noReq == true)
             {
                 canInteract = true;

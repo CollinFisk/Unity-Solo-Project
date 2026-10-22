@@ -62,19 +62,19 @@ public class RangedEnemies : MonoBehaviour
         if (isFollowing)
         {
             agent.destination = player.transform.position;
+
+
+            var pos = player.transform.position;
+
+            EnemyGun.transform.LookAt(pos);
+            transform.LookAt(pos);
+
+            Vector3 gunEuler = EnemyGun.rotation.eulerAngles;
+            EnemyGun.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
+
+            Vector3 Euler = transform.rotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(0, Euler.y, 0);
         }
-
-        var pos = player.transform.position;
-
-        EnemyGun.transform.LookAt(pos);
-        transform.LookAt(pos);
-
-        Vector3 gunEuler = EnemyGun.rotation.eulerAngles;
-        EnemyGun.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
-
-        Vector3 Euler = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(0, Euler.y, 0);
-
 
 
         if (isFollowing && enemyCanFire)
@@ -114,7 +114,6 @@ public class RangedEnemies : MonoBehaviour
         if (other.tag == "Player")
         {
             isFollowing = false;
-            StopCoroutine("ecooldownFire");
             detectionRadius = 15f;
         }
     }
