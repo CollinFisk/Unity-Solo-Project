@@ -36,10 +36,13 @@ public class PlayerController : MonoBehaviour
     public bool enemyDamage = false;
     public bool foundKey = false;
     public bool canDash = true;
+    public bool groundTarget = true;
+    public bool airTarget = false;
 
     RaycastHit mouseCheck;
     Vector2 moveInput = Vector2.zero;
     Vector3 worldPos;
+    Vector3 airPos;
 
     public Weapon currentWeapon;
 
@@ -54,6 +57,7 @@ public class PlayerController : MonoBehaviour
     public GameObject fireTo;
     public Transform playerMovement;
     public Collider coll;
+    public Collider airColl;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -75,6 +79,7 @@ public class PlayerController : MonoBehaviour
         firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
         coll = GameObject.Find("FireSurface").GetComponent<Collider>();
+        airColl = GameObject.FindGameObjectWithTag("FlyEnemy").GetComponent<Collider>();
     }
 
     private void FixedUpdate()
@@ -115,11 +120,21 @@ public class PlayerController : MonoBehaviour
 
                 if (currentWeapon)
                 {
-                    weaponSlot.transform.LookAt(worldPos);
+                    if (groundTarget)
+                    {
+                        weaponSlot.transform.LookAt(worldPos);
 
-                    Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
-                    weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
+                        Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
+                        weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
+                    }
+                    if (airTarget)
+                    {
+                        airPos = mouseCheck.point;
+                        weaponSlot.transform.LookAt(airPos);
 
+                        Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
+                        weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
+                    }
                     if (currentWeapon.holdToAttack && attacking)
                     {
                         currentWeapon.fire();

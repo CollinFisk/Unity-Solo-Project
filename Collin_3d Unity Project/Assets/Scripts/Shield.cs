@@ -14,13 +14,16 @@ public class Shield : MonoBehaviour
 
     void Update()
     {
-        Vector3 shieldPos = shield.transform.position;
-        shieldPos.x = protectedCreature.transform.position.x + shieldXdistance;
-        shieldPos.y = protectedCreature.transform.position.y + shieldYdistance;
-        shieldPos.z = protectedCreature.transform.position.z + shieldZdistance;
-        shield.transform.position = shieldPos;
-
-        if (shieldHealth == 0)
+        if (protectedCreature != null)
+        {
+            Vector3 shieldPos = shield.transform.position;
+            shieldPos.x = protectedCreature.transform.position.x + shieldXdistance;
+            shieldPos.y = protectedCreature.transform.position.y + shieldYdistance;
+            shieldPos.z = protectedCreature.transform.position.z + shieldZdistance;
+            shield.transform.position = shieldPos;
+        }
+   
+        if (shieldHealth == 0 || protectedCreature == null)
         {
             shield = transform.gameObject;
             Destroy(shield);

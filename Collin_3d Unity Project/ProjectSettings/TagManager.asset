@@ -25,6 +25,7 @@ TagManager:
   - collectionReq
   - Button
   - GameManager
+  - Drone
   layers:
   - Default
   - TransparentFX
