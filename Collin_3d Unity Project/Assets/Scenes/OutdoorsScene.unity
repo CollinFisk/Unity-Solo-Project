@@ -20634,7 +20634,7 @@ MonoBehaviour:
   interactDistance: 50
   fusionDmgInterval: 1
   enemyAttackRate: 1
-  dashStrength: 0
+  dashStrength: 500
   dashCooldownSpeed: 2
   dashDuration: 0.2
   interactCooldown: 2
@@ -20856,6 +20856,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 01d68a22-e4e7-4ceb-8b95-586a80a1920e
     m_ActionName: 'Player/Reload[/Keyboard/r]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1483898748}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Dash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b4b42d88-3015-447f-bb37-cc199eab8a99
+    m_ActionName: 'Player/Dash[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

@@ -119,21 +119,11 @@ public class PlayerController : MonoBehaviour
 
                 if (currentWeapon)
                 {
-                    if (groundTarget)
-                    {
-                        weaponSlot.transform.LookAt(worldPos);
+                    weaponSlot.transform.LookAt(worldPos);
 
-                        Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
-                        weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
-                    }
-                    if (airTarget)
-                    {
-                        airPos = mouseCheck.point;
-                        weaponSlot.transform.LookAt(airPos);
+                    Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
+                    weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
 
-                        Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
-                        weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
-                    }
                     if (currentWeapon.holdToAttack && attacking)
                     {
                         currentWeapon.fire();
@@ -297,11 +287,6 @@ public class PlayerController : MonoBehaviour
                 health--;
             }
 
-            if (collision.gameObject.tag == "Explosion")
-            {
-                health = health - 3;
-            }
-
             if (collision.gameObject.tag == "RangedEnemy")
             {
                 health--;
@@ -320,7 +305,7 @@ public class PlayerController : MonoBehaviour
 
             if (collision.gameObject.tag == "Projectile")
             {
-                health = health - 5;
+                health--;
                 Destroy(collision.gameObject);
             }
 
@@ -352,6 +337,11 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "EndDoor")
         {
             GameObject.Find("GameManager").GetComponent<GameManager>().LoadNextLevel();
+        }
+
+        if (other.gameObject.tag == "Explosion")
+        {
+            health = health - 3;
         }
     }
     private void OnTriggerStay(Collider other)

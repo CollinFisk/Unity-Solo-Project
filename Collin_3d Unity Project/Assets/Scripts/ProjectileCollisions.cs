@@ -6,10 +6,6 @@ public class ProjectileCollisions : MonoBehaviour
 
     public float expTime = 0.3f;
 
-    public void Start()
-    {
-        Explosion = GameObject.Find("Explosion");
-    }
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Projectile")
