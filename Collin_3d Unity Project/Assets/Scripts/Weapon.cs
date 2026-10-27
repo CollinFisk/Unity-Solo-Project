@@ -101,7 +101,7 @@ public class Weapon : MonoBehaviour
         {
             clip--;
 
-            if (!regularWeapon)
+            if (regularWeapon)
             {
                 GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
                 p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);

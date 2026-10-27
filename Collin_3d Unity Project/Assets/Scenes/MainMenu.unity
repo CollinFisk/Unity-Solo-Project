@@ -318,6 +318,65 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &361345167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 361345169}
+  - component: {fileID: 361345168}
+  m_Layer: 0
+  m_Name: playerMovement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!54 &361345168
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361345167}
+  serializedVersion: 5
+  m_Mass: 5
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 32
+  m_CollisionDetection: 0
+--- !u!4 &361345169
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361345167}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.7, z: -30}
+  m_LocalScale: {x: 0.99, y: 0.0099, z: 0.99}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &489886354
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,6 +420,9 @@ MonoBehaviour:
   interactDistance: 50
   fusionDmgInterval: 1
   enemyAttackRate: 1
+  dashStrength: 0
+  dashCooldownSpeed: 2
+  dashDuration: 0.2
   interactCooldown: 2
   InteractSphere: {fileID: 1157664167}
   canInteract: {fileID: 1157664166}
@@ -368,16 +430,21 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   attacking: 0
   sprinting: 0
-  crouching: 0
+  dashing: 0
   fusionDmg: 0
   enemyDamage: 0
   foundKey: 0
+  canDash: 1
+  groundTarget: 1
+  airTarget: 0
   currentWeapon: {fileID: 0}
   weaponSlot: {fileID: 0}
   pickupObj: {fileID: 0}
   EnemyAttackHitbox: {fileID: 0}
   fireTo: {fileID: 0}
+  playerMovement: {fileID: 0}
   coll: {fileID: 0}
+  airColl: {fileID: 0}
 --- !u!114 &489886356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2090,7 +2157,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   player: {fileID: 489886355}
   boss: {fileID: 0}
-  interactions: {fileID: 1157664166}
   healthBar: {fileID: 270948845}
   bossHealthBar: {fileID: 1664121097}
   clipText: {fileID: 552984549}
@@ -2099,7 +2165,6 @@ MonoBehaviour:
   pausedText: {fileID: 658058987}
   gameOverText: {fileID: 1548234083}
   pauseMenu: {fileID: 1589424332}
-  endDoor: {fileID: 0}
   paused: 0
   gameOver: 0
   enemiesGone: 0
@@ -2973,3 +3038,4 @@ SceneRoots:
   - {fileID: 489886361}
   - {fileID: 91411174}
   - {fileID: 1181573010}
+  - {fileID: 361345169}

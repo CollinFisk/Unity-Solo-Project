@@ -36152,13 +36152,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1228569072}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.5, y: 0, z: 0.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1483898747}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &1230689279 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4668780383276913070, guid: 0fb62c7b17e9f3b469bb457c2bb1c366, type: 3}
@@ -43592,6 +43592,7 @@ MonoBehaviour:
   fireTo: {fileID: 0}
   playerMovement: {fileID: 0}
   coll: {fileID: 0}
+  airColl: {fileID: 0}
 --- !u!114 &1483898749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59134,6 +59135,10 @@ PrefabInstance:
     - target: {fileID: 742913658977203471, guid: 22461d60ef711c44094b5a310c39f074, type: 3}
       propertyPath: canFire
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 742913658977203471, guid: 22461d60ef711c44094b5a310c39f074, type: 3}
+      propertyPath: regularWeapon
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2974956258126742115, guid: 22461d60ef711c44094b5a310c39f074, type: 3}
       propertyPath: m_Name

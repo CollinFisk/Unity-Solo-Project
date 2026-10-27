@@ -79,7 +79,6 @@ public class PlayerController : MonoBehaviour
         firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
         coll = GameObject.Find("FireSurface").GetComponent<Collider>();
-        airColl = GameObject.FindGameObjectWithTag("FlyEnemy").GetComponent<Collider>();
     }
 
     private void FixedUpdate()
