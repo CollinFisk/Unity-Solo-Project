@@ -36,8 +36,6 @@ public class PlayerController : MonoBehaviour
     public bool enemyDamage = false;
     public bool foundKey = false;
     public bool canDash = true;
-    public bool groundTarget = true;
-    public bool airTarget = false;
 
     RaycastHit mouseCheck;
     Vector2 moveInput = Vector2.zero;
@@ -55,6 +53,8 @@ public class PlayerController : MonoBehaviour
     public GameObject pickupObj;
     public GameObject EnemyAttackHitbox;
     public GameObject fireTo;
+    public GameObject Explosion;
+
     public Transform playerMovement;
     public Collider coll;
     public Collider airColl;
@@ -100,7 +100,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         coll.Raycast(playerCam.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono), out mouseCheck, 10000000);
-        firingSurface.position = transform.position;
+
+        firingSurface.transform.position = new Vector3 (transform.position.x, transform.position.y - 1.3f, transform.position.z);
 
         worldPos = mouseCheck.point;
 
@@ -307,6 +308,14 @@ public class PlayerController : MonoBehaviour
             {
                 health--;
                 Destroy(collision.gameObject);
+            }
+
+            if (collision.gameObject.tag == "explodingProjectile")
+            {
+                Destroy(collision.gameObject);
+                health--;
+                GameObject p = Instantiate(Explosion, collision.collider.ClosestPoint(collision.gameObject.transform.position), transform.rotation);
+                Destroy(p, 0.3f);
             }
 
             if (collision.gameObject.tag == "Health" && health < maxHealth)

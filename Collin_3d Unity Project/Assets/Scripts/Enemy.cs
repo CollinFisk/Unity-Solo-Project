@@ -59,11 +59,11 @@ public class Enemy : MonoBehaviour
         {
             if (agent.velocity != Vector3.zero)
             {
-                myAnim.SetBool("isWalking", true);
+                myAnim.SetBool("isMoving", true);
             }
             else
             {
-                myAnim.SetBool("isWalking", false);
+                myAnim.SetBool("isMoving", false);
             }
         }
     }
