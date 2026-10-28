@@ -3,12 +3,14 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    Animator myAnim;
+
     public bool isFollowing = false;
 
     public NavMeshAgent agent;
     public PlayerController player;
-    public float detectionRadius = 8f;
-    public float enemyHealth = 5f;
+    public float detectionRadius;
+    public float enemyHealth;
     public float expTime = 0.3f;
 
     public Transform enemy;
@@ -21,6 +23,12 @@ public class Enemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         enemy = transform;
         EnemyAttackHitbox = enemy.GetChild(0);
+
+        //temporary if statement
+        if (transform.GetComponent<Animator>() != null)
+        {
+            myAnim = GetComponent<Animator>();
+        }
     }
 
     // Update is called once per frame
@@ -46,6 +54,18 @@ public class Enemy : MonoBehaviour
             agent.destination = player.transform.position;
         }
 
+        // temporary if statement for testing
+        if (myAnim != null)
+        {
+            if (agent.velocity != Vector3.zero)
+            {
+                myAnim.SetBool("isWalking", true);
+            }
+            else
+            {
+                myAnim.SetBool("isWalking", false);
+            }
+        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -53,7 +73,6 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Player")
         {
             isFollowing = true;
-            detectionRadius = 12f;
         }
     }
 
@@ -62,7 +81,6 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Player")
         {
             isFollowing = false;
-            detectionRadius = 8f;
         }
     }
 
