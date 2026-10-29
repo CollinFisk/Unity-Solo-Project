@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
     Animator myAnim;
 
     public bool isFollowing = false;
+    public bool attackingAnim;
 
     public NavMeshAgent agent;
     public PlayerController player;
@@ -64,6 +65,12 @@ public class Enemy : MonoBehaviour
             else
             {
                 myAnim.SetBool("isMoving", false);
+            }
+            if (attackingAnim)
+            {
+                myAnim.SetBool("isMoving", false);
+                myAnim.SetBool("Attack", true);
+                attackingAnim = false;
             }
         }
     }

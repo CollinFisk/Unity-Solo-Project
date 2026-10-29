@@ -360,6 +360,7 @@ public class PlayerController : MonoBehaviour
             if (!enemyDamage)
             {
                 StartCoroutine("enemyDmgCooldown");
+                other.GetComponentInParent<Enemy>().attackingAnim = true;
             }
         }
     }
@@ -373,6 +374,8 @@ public class PlayerController : MonoBehaviour
                 StopCoroutine("enemyDmgCooldown");
                 enemyDamage = false;
             }
+            other.GetComponentInParent<Enemy>().attackingAnim = false;
+            other.GetComponentInParent<Animator>().SetBool("Attack", false);
         }
     }
 
@@ -401,7 +404,6 @@ public class PlayerController : MonoBehaviour
     IEnumerator enemyDmgCooldown()
     {
         enemyDamage = true;
-
         yield return new WaitForSeconds(enemyAttackRate);
 
         health--;
