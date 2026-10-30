@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
 
     public TextMeshProUGUI clipText;
+    public TextMeshProUGUI manaText;
     public TextMeshProUGUI weaponText;
     public TextMeshProUGUI pickupObjText;
     public TextMeshProUGUI pausedText;
@@ -44,6 +45,8 @@ public class GameManager : MonoBehaviour
         }
 
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
+        manaText = GameObject.Find("manaText").GetComponent<TextMeshProUGUI>();
+
         weaponText = GameObject.Find("weaponName").GetComponent<TextMeshProUGUI>();
         pickupObjText = GameObject.Find("PickupObjText").GetComponent<TextMeshProUGUI>();
         
@@ -71,6 +74,7 @@ public class GameManager : MonoBehaviour
             if (player.currentWeapon)
             {
                 clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
+                clipText.text = "Mana: " + player.currentWeapon.mana + "/" + player.currentWeapon.maxMana;
                 weaponText.text = player.currentWeapon.weaponName;
             }
             else

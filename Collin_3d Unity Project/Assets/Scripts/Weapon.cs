@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,6 +19,10 @@ public class Weapon : MonoBehaviour
     public bool canFire = false;
     public bool holdToAttack = true;
     public bool reloading = false;
+    public float manaCooldown;
+    public bool manaLock;
+    public bool regenMana;
+    public bool canRegenMana;
     public int weaponID;
     public string weaponName;
 
@@ -34,8 +39,11 @@ public class Weapon : MonoBehaviour
 
     [Header("Ammo Stats")]
     public int ammo;
+    public int mana;
     public int maxAmmo;
+    public int maxMana;
     public int ammoRefill;
+    public int manaRefill;
     public bool expWeapon;
     public bool shotgunWeapon;
     public bool regularWeapon;
@@ -45,6 +53,30 @@ public class Weapon : MonoBehaviour
     {
         firePoint = transform.GetChild(0);
     }
+
+    private void Update()
+    {
+        if (!regenMana)
+        {
+            if (!canRegenMana && !manaLock)
+            {
+                StartCoroutine("sprintReset");
+            }
+            if (canRegenMana && !regenMana)
+            {
+                regenMana = true;
+            }
+            if (regenMana)
+            {
+                mana += (int)(manaRefill * Time.deltaTime);
+
+                if (mana >= maxMana)
+                {
+                    mana = maxMana;
+                    regenMana = false;
+                }
+            }
+        }
     public void equip(PlayerController p)
     {
         player = p;
