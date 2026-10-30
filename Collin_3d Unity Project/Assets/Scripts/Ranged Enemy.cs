@@ -13,6 +13,8 @@ public class RangedEnemies : MonoBehaviour
 
     public NavMeshAgent agent;
     public PlayerController player;
+    Animator myAnim;
+
     public Vector2 efiringDirection;
    
     public float detectionRadius = 15f;
@@ -45,6 +47,11 @@ public class RangedEnemies : MonoBehaviour
         EnemyGun.SetPositionAndRotation(eweaponSlot.position, eweaponSlot.rotation);
         EnemyGun.GetComponent<Rigidbody>().isKinematic = true;
         EnemyGun.GetComponent<Collider>().isTrigger = true;
+
+        if (transform.GetComponent<Animator>() != null)
+        {
+            myAnim = GetComponent<Animator>();
+        }
     }
 
 
@@ -79,21 +86,34 @@ public class RangedEnemies : MonoBehaviour
 
         if (isFollowing && enemyCanFire)
         {
-
+            myAnim.SetBool("isMoving", false);
+            myAnim.SetBool("Attack", true);
+         //   myAnim.SetBool("Attack", false);
             GameObject p = Instantiate(eprojectile, efirePoint.position, efirePoint.rotation);
             p.GetComponent<Rigidbody>().AddForce(efirePoint.forward * eprojVelocity);
             Destroy(p, eprojLifespan);
             efireCooldown = true;
             enemyCanFire = false;
         }
-}
+
+        if (myAnim != null)
+        {
+            if (agent.velocity != Vector3.zero)
+            {
+                myAnim.SetBool("isMoving", true);
+            }
+            else
+            {
+                myAnim.SetBool("isMoving", false);
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
             isFollowing = true;
-            detectionRadius = 20f;
         }
     }
 
@@ -114,7 +134,6 @@ public class RangedEnemies : MonoBehaviour
         if (other.tag == "Player")
         {
             isFollowing = false;
-            detectionRadius = 15f;
         }
     }
     void OnCollisionEnter(Collision other)
@@ -142,6 +161,7 @@ public class RangedEnemies : MonoBehaviour
     {
         efireCooldown = false;
         yield return new WaitForSeconds(erof);
+        myAnim.SetBool("Attack", false);
         enemyCanFire = true;
     }
 }
