@@ -161,19 +161,6 @@ public class PlayerController : MonoBehaviour
                             pickupObj = null;
                         }
                     }
-                    else if (pickupObj.tag == "Ammo" && currentWeapon && currentWeapon.ammo < currentWeapon.maxAmmo)
-                    {
-                        int refillAmt = currentWeapon.ammo + currentWeapon.ammoRefill;
-
-                        if (refillAmt >= currentWeapon.maxAmmo)
-                        {
-                            currentWeapon.ammo = currentWeapon.maxAmmo;
-                        }
-                        else
-                            currentWeapon.ammo += currentWeapon.ammoRefill;
-
-                        Destroy(pickupObj);
-                    }
                     else if (pickupObj.tag == "collectionReq")
                     {
                         Destroy(pickupObj);
@@ -262,21 +249,6 @@ public class PlayerController : MonoBehaviour
     {
         if (!dashing)
         {
-
-
-            if (collision.gameObject.tag == "Ammo" && currentWeapon && currentWeapon.ammo < currentWeapon.maxAmmo)
-            {
-                int refillAmt = currentWeapon.ammo + currentWeapon.ammoRefill;
-
-                if (refillAmt >= currentWeapon.maxAmmo)
-                {
-                    currentWeapon.ammo = currentWeapon.maxAmmo;
-                }
-                else
-                    currentWeapon.ammo += currentWeapon.ammoRefill;
-
-                Destroy(collision.gameObject);
-            }
 
             if (collision.gameObject.tag == "Hazard")
             {

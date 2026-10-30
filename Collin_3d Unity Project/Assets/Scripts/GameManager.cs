@@ -14,10 +14,10 @@ public class GameManager : MonoBehaviour
 
     public Slider healthBar;
     public Slider bossHealthBar;
+    public Slider manaBar;
 
 
     public TextMeshProUGUI clipText;
-    public TextMeshProUGUI manaText;
     public TextMeshProUGUI weaponText;
     public TextMeshProUGUI pickupObjText;
     public TextMeshProUGUI pausedText;
@@ -39,13 +39,13 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
         healthBar = GameObject.Find("healthBar").GetComponent<Slider>();
+        manaBar = GameObject.Find("manaBar").GetComponent<Slider>();
         if (boss != null)
         {
             bossHealthBar = GameObject.Find("bossHealthBar").GetComponent<Slider>();
         }
 
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
-        manaText = GameObject.Find("manaText").GetComponent<TextMeshProUGUI>();
 
         weaponText = GameObject.Find("weaponName").GetComponent<TextMeshProUGUI>();
         pickupObjText = GameObject.Find("PickupObjText").GetComponent<TextMeshProUGUI>();
@@ -66,6 +66,11 @@ public class GameManager : MonoBehaviour
         if (!gameOver)
         {
             healthBar.value = player.health;
+            if (player.currentWeapon != null)
+            {
+                manaBar.value = player.currentWeapon.mana;
+            }
+
             if (boss != null)
             {
                 bossHealthBar.value = boss.enemyHealth;
@@ -74,7 +79,6 @@ public class GameManager : MonoBehaviour
             if (player.currentWeapon)
             {
                 clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
-                clipText.text = "Mana: " + player.currentWeapon.mana + "/" + player.currentWeapon.maxMana;
                 weaponText.text = player.currentWeapon.weaponName;
             }
             else

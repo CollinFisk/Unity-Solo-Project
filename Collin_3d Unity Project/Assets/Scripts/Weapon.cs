@@ -36,14 +36,12 @@ public class Weapon : MonoBehaviour
     public int currentFireMode;
     public int clip;
     public int clipSize;
+    public int manaPrice;
 
     [Header("Ammo Stats")]
-    public int ammo;
-    public int mana;
-    public int maxAmmo;
-    public int maxMana;
-    public int ammoRefill;
-    public int manaRefill;
+    public float mana;
+    public float maxMana;
+    public float manaRefill;
     public bool expWeapon;
     public bool shotgunWeapon;
     public bool regularWeapon;
@@ -56,27 +54,41 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if (!regenMana)
+        if (mana <= 0)
         {
-            if (!canRegenMana && !manaLock)
-            {
-                StartCoroutine("sprintReset");
-            }
-            if (canRegenMana && !regenMana)
-            {
-                regenMana = true;
-            }
-            if (regenMana)
-            {
-                mana += (int)(manaRefill * Time.deltaTime);
+            canRegenMana = false;
+            mana = 0;
+        }
 
-                if (mana >= maxMana)
-                {
-                    mana = maxMana;
-                    regenMana = false;
-                }
+        else if (!canRegenMana && !manaLock)
+        {
+            StartCoroutine("manaReset");
+        }
+        else if (canRegenMana && !regenMana)
+        {
+            regenMana = true;
+        }
+        else if (regenMana)
+        {
+            mana += manaRefill * Time.fixedDeltaTime;
+
+            if(mana >= maxMana)
+            {
+                mana = maxMana;
             }
         }
+    }
+
+    IEnumerator manaReset()
+    {
+        manaLock = true;
+        regenMana = false;
+        yield return new WaitForSeconds(manaCooldown);
+
+        canRegenMana = true;
+        regenMana = true;
+        manaLock = false;
+    }
     public void equip(PlayerController p)
     {
         player = p;
@@ -111,16 +123,8 @@ public class Weapon : MonoBehaviour
 
         int reloadCount = clipSize - clip;
 
-        if (ammo < reloadCount)
-        {
-            clip += reloadCount; //ammo;
-            //ammo = 0;
-        }
-        else
-        {
             clip += reloadCount;
-            //ammo -= reloadCount;
-        }
+
 
         reloading = true;
         canFire = false;
@@ -129,9 +133,8 @@ public class Weapon : MonoBehaviour
 
     public void fire()
     {
-        if (clip > 0 && canFire && !reloading)
+        if (clip > 0 && canFire && !reloading && mana >= manaPrice)
         {
-            clip--;
 
             if (regularWeapon)
             {
@@ -139,17 +142,13 @@ public class Weapon : MonoBehaviour
                 p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                 Destroy(p, projLifespan);
 
-                canFire = false;
-                StartCoroutine("cooldownFire");
+
             }
             if (expWeapon)
             {
                 GameObject p = Instantiate(explodingProjectile, firePoint.position, firePoint.rotation);
                 p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                 Destroy(p, projLifespan);
-
-                canFire = false;
-                StartCoroutine("cooldownFire");
             }
             if (shotgunWeapon)
             {
@@ -168,9 +167,13 @@ public class Weapon : MonoBehaviour
                     p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                     Destroy(p, projLifespan);
                 }
-                canFire = false;
-                StartCoroutine("cooldownFire");
             }
+
+            clip = clip - 1;
+            mana = mana - manaPrice;
+            regenMana = false;
+            canFire = false;
+            StartCoroutine("cooldownFire");
         }
     }
 
