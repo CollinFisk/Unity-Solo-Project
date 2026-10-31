@@ -72,6 +72,8 @@ public class Enemy : MonoBehaviour
                 myAnim.SetBool("Attack", true);
                 attackingAnim = false;
             }
+            else
+                myAnim.SetBool("Attack", false);
         }
     }
 

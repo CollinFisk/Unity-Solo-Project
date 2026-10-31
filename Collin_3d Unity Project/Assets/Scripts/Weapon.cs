@@ -9,6 +9,7 @@ using UnityEngine.Splines;
 
 public class Weapon : MonoBehaviour
 {
+
     PlayerController player;
 
     [Header("Object Refrences")]
@@ -16,13 +17,10 @@ public class Weapon : MonoBehaviour
     public GameObject explodingProjectile;
     public Transform firePoint;
     [Header("Meta Attributes")]
+    public bool gun;
     public bool canFire = false;
     public bool holdToAttack = true;
     public bool reloading = false;
-    public float manaCooldown;
-    public bool manaLock;
-    public bool regenMana;
-    public bool canRegenMana;
     public int weaponID;
     public string weaponName;
 
@@ -39,55 +37,19 @@ public class Weapon : MonoBehaviour
     public int manaPrice;
 
     [Header("Ammo Stats")]
-    public float mana;
-    public float maxMana;
-    public float manaRefill;
     public bool expWeapon;
     public bool shotgunWeapon;
     public bool regularWeapon;
+
+    [Header("Weapon Position")]
+    public float XOffset;
+    public float YOffset;
+    public float ZOffset;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         firePoint = transform.GetChild(0);
-    }
-
-    private void Update()
-    {
-        if (mana <= 0)
-        {
-            canRegenMana = false;
-            mana = 0;
-        }
-
-        else if (!canRegenMana && !manaLock)
-        {
-            StartCoroutine("manaReset");
-        }
-        else if (canRegenMana && !regenMana)
-        {
-            regenMana = true;
-        }
-        else if (regenMana)
-        {
-            mana += manaRefill * Time.fixedDeltaTime;
-
-            if(mana >= maxMana)
-            {
-                mana = maxMana;
-            }
-        }
-    }
-
-    IEnumerator manaReset()
-    {
-        manaLock = true;
-        regenMana = false;
-        yield return new WaitForSeconds(manaCooldown);
-
-        canRegenMana = true;
-        regenMana = true;
-        manaLock = false;
     }
     public void equip(PlayerController p)
     {
@@ -133,20 +95,18 @@ public class Weapon : MonoBehaviour
 
     public void fire()
     {
-        if (clip > 0 && canFire && !reloading && mana >= manaPrice)
+        if (clip > 0 && canFire && !reloading && player.mana >= manaPrice)
         {
 
             if (regularWeapon)
             {
-                GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
+                GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
                 p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                 Destroy(p, projLifespan);
-
-
             }
             if (expWeapon)
             {
-                GameObject p = Instantiate(explodingProjectile, firePoint.position, firePoint.rotation);
+                GameObject p = Instantiate(explodingProjectile, firePoint.position, transform.rotation);
                 p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                 Destroy(p, projLifespan);
             }
@@ -161,18 +121,21 @@ public class Weapon : MonoBehaviour
                     ShotgunShotRotation.z = 0;
                     ShotgunShotRotation.w = 0;
                     firePoint.rotation = ShotgunShotRotation;
-                    GameObject p = Instantiate(projectile, firePoint.position, firePoint.rotation);
-
-
+                    GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
                     p.GetComponent<Rigidbody>().AddForce(firePoint.transform.forward * projVelocity);
                     Destroy(p, projLifespan);
                 }
             }
-
-            clip = clip - 1;
-            mana = mana - manaPrice;
-            regenMana = false;
+            if (gun)
+            {
+                clip -= 1;
+            }
+            player.mana -= manaPrice;
+            player.regenMana = false;
+            player.canRegenMana = false;
             canFire = false;
+            player.attackingAnim = true;
+            player.movingAnim = false;
             StartCoroutine("cooldownFire");
         }
     }
@@ -180,6 +143,10 @@ public class Weapon : MonoBehaviour
     IEnumerator cooldownFire()
     {
         yield return new WaitForSeconds(rof);
+        player.myAnim.SetBool("Attack", false);
+        player.movingAnim = true;
+        player.myAnim.SetBool("isMoving", true);
+
 
         if (clip > 0)
             canFire = true;
@@ -188,7 +155,7 @@ public class Weapon : MonoBehaviour
     IEnumerator reloadingCooldown()
     {
         yield return new WaitForSeconds(reloadCooldown);
-
+        player.canRegenMana = true;
         reloading = false;
         canFire = true;
     }

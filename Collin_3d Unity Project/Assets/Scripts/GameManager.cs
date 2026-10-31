@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         }
 
         clipText = GameObject.Find("clipText").GetComponent<TextMeshProUGUI>();
-
+        
         weaponText = GameObject.Find("weaponName").GetComponent<TextMeshProUGUI>();
         pickupObjText = GameObject.Find("PickupObjText").GetComponent<TextMeshProUGUI>();
         
@@ -66,10 +66,7 @@ public class GameManager : MonoBehaviour
         if (!gameOver)
         {
             healthBar.value = player.health;
-            if (player.currentWeapon != null)
-            {
-                manaBar.value = player.currentWeapon.mana;
-            }
+            manaBar.value = player.mana;
 
             if (boss != null)
             {
@@ -78,7 +75,10 @@ public class GameManager : MonoBehaviour
 
             if (player.currentWeapon)
             {
-                clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
+                if (player.currentWeapon.gun)
+                {
+                    clipText.text = "Clip: " + player.currentWeapon.clip + "/" + player.currentWeapon.clipSize;
+                }
                 weaponText.text = player.currentWeapon.weaponName;
             }
             else

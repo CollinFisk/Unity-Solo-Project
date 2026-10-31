@@ -157,7 +157,7 @@ MonoBehaviour:
   projectile: {fileID: 0}
   explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
   firePoint: {fileID: 6581742060829590792}
-  fireTo: {fileID: 0}
+  gun: 0
   canFire: 0
   holdToAttack: 1
   reloading: 0
@@ -171,12 +171,13 @@ MonoBehaviour:
   currentFireMode: 1
   clip: 1
   clipSize: 1
-  ammo: 2
-  maxAmmo: 10
-  ammoRefill: 2
+  manaPrice: 50
   expWeapon: 1
   shotgunWeapon: 0
   regularWeapon: 0
+  XOffset: 2
+  YOffset: 2
+  ZOffset: 0
 --- !u!1 &8937163808769144749
 GameObject:
   m_ObjectHideFlags: 0

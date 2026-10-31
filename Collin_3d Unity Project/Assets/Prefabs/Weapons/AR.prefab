@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 5358427278084655535}
   - component: {fileID: 8348269968008694407}
   - component: {fileID: 2441103890273045551}
-  - component: {fileID: 6117614405258851722}
   - component: {fileID: 4600846122883183372}
   - component: {fileID: 4693779147056489096}
   m_Layer: 0
@@ -61,7 +60,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4573076176065326256}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.03, y: 6.85, z: 33.41}
   m_LocalScale: {x: 0.64645, y: 1.1891448, z: 0.64645004}
   m_ConstrainProportionsScale: 0
@@ -149,41 +148,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6117614405258851722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4573076176065326256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97b671b7e7f73614e97323c466422a7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  projectile: {fileID: 8830221767925985334, guid: 6745b8ecafdefe04b8b7c7b3919f197e, type: 3}
-  explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
-  firePoint: {fileID: 943954895764360880}
-  fireTo: {fileID: 0}
-  canFire: 0
-  holdToAttack: 1
-  reloading: 0
-  weaponID: 2
-  weaponName: AR
-  projLifespan: 1
-  projVelocity: 150
-  reloadCooldown: 3
-  rof: 0.1
-  fireModes: 1
-  currentFireMode: 1
-  clip: 25
-  clipSize: 25
-  ammo: 50
-  maxAmmo: 200
-  ammoRefill: 75
-  expWeapon: 0
-  shotgunWeapon: 0
-  regularWeapon: 0
 --- !u!54 &4600846122883183372
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -224,9 +188,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AR
   projectile: {fileID: 8830221767925985334, guid: 6745b8ecafdefe04b8b7c7b3919f197e, type: 3}
-  explodingProjectile: {fileID: 0}
+  explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
   firePoint: {fileID: 943954895764360880}
-  fireTo: {fileID: 0}
+  gun: 0
   canFire: 1
   holdToAttack: 1
   reloading: 0
@@ -240,9 +204,10 @@ MonoBehaviour:
   currentFireMode: 1
   clip: 25
   clipSize: 25
-  ammo: 50
-  maxAmmo: 200
-  ammoRefill: 75
+  manaPrice: 4
   expWeapon: 0
   shotgunWeapon: 0
-  regularWeapon: 0
+  regularWeapon: 1
+  XOffset: 2
+  YOffset: 2
+  ZOffset: 0

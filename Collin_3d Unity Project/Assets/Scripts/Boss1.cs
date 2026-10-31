@@ -2,16 +2,23 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Boss1
-    : MonoBehaviour
+public class Boss1: MonoBehaviour
 {
+    Animator myAnim;
+
     public bool isFollowing = false;
+    public bool attackingAnim;
 
     public NavMeshAgent agent;
     public PlayerController player;
-    public float detectionRadius = 8f;
-    public float enemyHealth = 100f;
+    public float detectionRadius;
+    public float enemyHealth;
     public float expTime = 0.3f;
+    public float summonYLevel;
+
+    public Transform enemy;
+    public Transform EnemyAttackHitbox;
+
     public float summonTime = 5f;
 
     public bool canSummon = true;
@@ -19,20 +26,7 @@ public class Boss1
     public GameObject bossDrop;
     public GameObject summonRangedEnemy;
     public GameObject summonEnemy;
-    public Transform enemy;
-    public Transform EnemyAttackHitbox;
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        enemy = transform;
-        EnemyAttackHitbox = enemy.GetChild(0);
-    }
-
-    // Update is called once per frame
+  
     void Update()
     {
         if (enemyHealth <= 0)
@@ -72,29 +66,62 @@ public class Boss1
             agent.destination = player.transform.position;
         }
 
+        if (myAnim != null)
+        {
+            if (agent.velocity != Vector3.zero)
+            {
+                myAnim.SetBool("isMoving", true);
+            }
+            else
+            {
+                myAnim.SetBool("isMoving", false);
+            }
+            if (attackingAnim)
+            {
+                myAnim.SetBool("isMoving", false);
+                myAnim.SetBool("Attack", true);
+                attackingAnim = false;
+            }
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        enemy = transform;
+        EnemyAttackHitbox = enemy.GetChild(0);
+
+        //temporary if statement
+        if (transform.GetComponent<Animator>() != null)
+        {
+            myAnim = GetComponent<Animator>();
+        }
+    }
+
+        // temporary if statement for testing
+
+
+    public void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
             isFollowing = true;
-            detectionRadius = 12f;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
             isFollowing = false;
-            detectionRadius = 8f;
         }
     }
 
     public GameObject Explosion;
 
-    void OnCollisionEnter(Collision other)
+    public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Projectile")
         {
@@ -117,23 +144,27 @@ public class Boss1
 
     IEnumerator Summons()
     {
+        Vector3 summonPos = transform.position;
+        summonPos.x = transform.position.x;
+        summonPos.y = summonYLevel;
+        summonPos.z = transform.position.z;
         canSummon = false;
 
         yield return new WaitForSeconds(summonTime);
 
         if (enemyHealth <= 75)
         {
-            GameObject p = Instantiate(summonEnemy, transform.position, transform.rotation);
+            GameObject p = Instantiate(summonEnemy, summonPos, transform.rotation);
         }
 
         if (enemyHealth <= 50)
         {
-            GameObject p = Instantiate(summonRangedEnemy, transform.position, transform.rotation);
+            GameObject p = Instantiate(summonRangedEnemy, summonPos, transform.rotation);
         }
 
         if (enemyHealth <= 25)
         {
-            GameObject p = Instantiate(summonEnemy, transform.position, transform.rotation);
+            GameObject p = Instantiate(summonEnemy, summonPos, transform.rotation);
         }
 
         canSummon = true;

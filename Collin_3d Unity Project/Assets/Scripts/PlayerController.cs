@@ -6,9 +6,12 @@ using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerController : MonoBehaviour
 {
+    public Animator myAnim;
+
     public int health = 5;
     public int maxHealth = 5;
 
@@ -36,11 +39,20 @@ public class PlayerController : MonoBehaviour
     public bool enemyDamage = false;
     public bool foundKey = false;
     public bool canDash = true;
+    public bool attackingAnim;
+    public bool movingAnim;
+
+    public float mana;
+    public float maxMana;
+    public float manaRefill;
+    public float manaCooldown;
+    public bool manaLock;
+    public bool regenMana;
+    public bool canRegenMana;
 
     RaycastHit mouseCheck;
     Vector2 moveInput = Vector2.zero;
     Vector3 worldPos;
-    Vector3 airPos;
 
     public Weapon currentWeapon;
 
@@ -48,7 +60,6 @@ public class PlayerController : MonoBehaviour
     public Transform weaponSlot;
     PlayerInput input;
     Rigidbody rb;
-    Rigidbody playerMovementrb;
     Transform firingSurface;
     public GameObject pickupObj;
     public GameObject EnemyAttackHitbox;
@@ -57,7 +68,6 @@ public class PlayerController : MonoBehaviour
 
     public Transform playerMovement;
     public Collider coll;
-    public Collider airColl;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -73,12 +83,16 @@ public class PlayerController : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         playerMovement = GameObject.Find("playerMovement").GetComponent<Transform>();
-        playerMovementrb = GameObject.Find("playerMovement").GetComponent<Rigidbody>();
-
 
         firingSurface = GameObject.FindGameObjectWithTag("FS").transform;
         fireTo = GameObject.Find("fireTo");
         coll = GameObject.Find("FireSurface").GetComponent<Collider>();
+
+        if (transform.GetComponent<Animator>() != null)
+        {
+            myAnim = GetComponent<Animator>();
+        }
+        movingAnim = true;
     }
 
     private void FixedUpdate()
@@ -123,13 +137,66 @@ public class PlayerController : MonoBehaviour
                     weaponSlot.transform.LookAt(worldPos);
 
                     Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
-                    weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 90, gunEuler.y, gunEuler.z);
+                    weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 80, gunEuler.y, gunEuler.z);
+
+                    Vector3 weaponPos = transform.position;
+                    weaponPos.x = transform.position.x + currentWeapon.XOffset;
+                    weaponPos.y = transform.position.y + currentWeapon.YOffset;
+                    weaponPos.z = transform.position.z + currentWeapon.ZOffset;
+                    weaponSlot.transform.position = weaponPos;
 
                     if (currentWeapon.holdToAttack && attacking)
                     {
                         currentWeapon.fire();
                     }
                 }
+            }
+
+            if (mana <= 0)
+            {
+                canRegenMana = false;
+                mana = 0;
+            }
+
+            else if (!canRegenMana && !manaLock)
+            {
+                StartCoroutine("manaReset");
+            }
+            else if (canRegenMana && !regenMana)
+            {
+                regenMana = true;
+            }
+            else if (regenMana)
+            {
+                mana += manaRefill * Time.fixedDeltaTime;
+
+                if (mana >= maxMana)
+                {
+                    mana = maxMana;
+                }
+            }
+        }
+
+        if (myAnim != null)
+        {
+            if (movingAnim)
+            {
+                if (rb.linearVelocity != Vector3.zero)
+                {
+                    myAnim.SetBool("isMoving", true);
+                }
+                else
+                    myAnim.SetBool("isMoving", false);
+            }
+            else
+            {
+                myAnim.SetBool("isMoving", false);
+            }
+            if (attackingAnim)
+            {
+                myAnim.SetBool("isMoving", false);
+                myAnim.SetBool("Attack", true);
+                attackingAnim = false;
             }
         }
     }
@@ -332,7 +399,11 @@ public class PlayerController : MonoBehaviour
             if (!enemyDamage)
             {
                 StartCoroutine("enemyDmgCooldown");
-                other.GetComponentInParent<Enemy>().attackingAnim = true;
+                if (other.GetComponentInParent<Enemy>() == true)
+                    other.GetComponentInParent<Enemy>().attackingAnim = true;
+                else if (other.GetComponentInParent<Boss1>() == true)
+                    other.GetComponentInParent<Boss1>().attackingAnim = true;
+
             }
         }
     }
@@ -346,8 +417,14 @@ public class PlayerController : MonoBehaviour
                 StopCoroutine("enemyDmgCooldown");
                 enemyDamage = false;
             }
-            other.GetComponentInParent<Enemy>().attackingAnim = false;
-            other.GetComponentInParent<Animator>().SetBool("Attack", false);
+            if (other.GetComponentInParent<Enemy>() == true)
+            {
+                other.GetComponentInParent<Enemy>().attackingAnim = false;
+                other.GetComponentInParent<Animator>().SetBool("Attack", false);
+            }
+            if (other.GetComponentInParent<Boss1>() == true)
+                other.GetComponentInParent<Boss1>().attackingAnim = false;
+                other.GetComponentInParent<Animator>().SetBool("Attack", false);
         }
     }
 
@@ -381,6 +458,7 @@ public class PlayerController : MonoBehaviour
         health--;
         enemyDamage = false;
     }
+
     IEnumerator dashCooldown()
     {
         canDash = false;
@@ -398,5 +476,16 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(dashCooldownSpeed);
         canDash = true;
+    }
+
+    IEnumerator manaReset()
+    {
+        manaLock = true;
+        regenMana = false;
+        yield return new WaitForSeconds(manaCooldown);
+
+        canRegenMana = true;
+        regenMana = true;
+        manaLock = false;
     }
 }

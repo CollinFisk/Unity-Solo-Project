@@ -129,10 +129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32464b604341e5041975fb04f6d5e100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pistol
-  projectile: {fileID: 8830221767925985334, guid: 6745b8ecafdefe04b8b7c7b3919f197e, type: 3}
+  projectile: {fileID: 5155343574298495681, guid: 3753317f52cfed94798cc661d864bdcd, type: 3}
   explodingProjectile: {fileID: 6207059631580074131, guid: 826b05541369d3b499595bf7e340a68e, type: 3}
   firePoint: {fileID: 9033854846196995637}
-  fireTo: {fileID: 0}
+  gun: 0
   canFire: 0
   holdToAttack: 1
   reloading: 0
@@ -146,12 +146,13 @@ MonoBehaviour:
   currentFireMode: 1
   clip: 10
   clipSize: 10
-  ammo: 20
-  maxAmmo: 100
-  ammoRefill: 25
+  manaPrice: 10
   expWeapon: 0
   shotgunWeapon: 0
-  regularWeapon: 0
+  regularWeapon: 1
+  XOffset: 2
+  YOffset: 2
+  ZOffset: 0
 --- !u!54 &3854495257577533022
 Rigidbody:
   m_ObjectHideFlags: 0
