@@ -26,9 +26,17 @@ public class GameManager : MonoBehaviour
 
     public GameObject pauseMenu;
 
+    public GameObject audioSource;
+    public AudioSource audio;
+    public AudioClip bgMusic;
+    public AudioClip bossMusic;
+    public AudioClip postBossMusic;
+
     public bool paused = false;
     public bool gameOver = false;
     public bool enemiesGone = false;
+    public bool bossActive = false;
+    public bool bossDefeated = false;
 
     public int enemyCount = 0;
     public int startEnemyCount = 0;
@@ -37,6 +45,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        audioSource = GameObject.Find("AudioSource");
+        audio = audioSource.GetComponent<AudioSource>();
 
         healthBar = GameObject.Find("healthBar").GetComponent<Slider>();
         manaBar = GameObject.Find("manaBar").GetComponent<Slider>();
@@ -117,11 +127,7 @@ public class GameManager : MonoBehaviour
         {
             if (boss.isFollowing)
             {
-                bossHealthBar.gameObject.SetActive(true);
-            }
-            else
-            {
-                bossHealthBar.gameObject.SetActive(false);
+                bossActive = true;
             }
         }
         if (boss == null)
@@ -129,6 +135,21 @@ public class GameManager : MonoBehaviour
             bossHealthBar.gameObject.SetActive(false);
         }
         enemiesKilled = startEnemyCount - enemyCount;
+        if (bossActive)
+        {
+            bossHealthBar.gameObject.SetActive(true);
+            audio.PlayOneShot(bossMusic);
+        }
+        if (!bossActive)
+        {
+            bossHealthBar.gameObject.SetActive(false);
+            audio.PlayOneShot(bgMusic);
+        }
+        if (bossDefeated)
+        {
+            bossHealthBar.gameObject.SetActive(false);
+            audio.PlayOneShot(postBossMusic);
+        }
 
     }
 

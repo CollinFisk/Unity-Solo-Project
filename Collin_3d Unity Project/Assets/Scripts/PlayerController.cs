@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
                     weaponSlot.transform.LookAt(worldPos);
 
                     Vector3 gunEuler = weaponSlot.transform.rotation.eulerAngles;
-                    weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 80, gunEuler.y, gunEuler.z);
+                    weaponSlot.transform.rotation = Quaternion.Euler(gunEuler.x + 85, gunEuler.y, gunEuler.z);
 
                     Vector3 weaponPos = transform.position;
                     weaponPos.x = transform.position.x + currentWeapon.XOffset;
@@ -174,6 +174,15 @@ public class PlayerController : MonoBehaviour
                 {
                     mana = maxMana;
                 }
+            }
+
+            if (sprinting)
+            {
+                manaRefill = 4f;
+            }
+            if (!sprinting)
+            {
+                manaRefill = 8f;
             }
         }
 

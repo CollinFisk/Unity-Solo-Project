@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class Boss1: MonoBehaviour
 {
     Animator myAnim;
+    GameManager gameManager;
 
     public bool isFollowing = false;
     public bool attackingAnim;
@@ -37,6 +38,8 @@ public class Boss1: MonoBehaviour
             GameObject p = Instantiate(bossDrop, transform.position, transform.rotation);
             p.GetComponent<Rigidbody>();
             StopCoroutine("Summons");
+            gameManager.bossDefeated = true;
+
             if (player.enemyDamage)
             {
                 player.StopCoroutine("enemyDmgCooldown");
@@ -47,16 +50,16 @@ public class Boss1: MonoBehaviour
             StartCoroutine ("Summons");
         }
 
-        else if (enemyHealth <= 50 && enemyHealth >= 25)
+        else if (enemyHealth <= 50)// && enemyHealth >= 25)
         {
             summonTime = 4f;
         }
-
+        /*
         else if (enemyHealth <= 25)
         {
             summonTime = 3f;
         }
-
+        */
         EnemyAttackHitbox.position = enemy.position;
         EnemyAttackHitbox.rotation = enemy.rotation;
 
