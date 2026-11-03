@@ -11,6 +11,7 @@ using static UnityEngine.Rendering.DebugUI;
 public class PlayerController : MonoBehaviour
 {
     public Animator myAnim;
+    public Animator weaponAnim;
 
     public int health = 5;
     public int maxHealth = 5;
@@ -102,6 +103,10 @@ public class PlayerController : MonoBehaviour
         playerMovementRotation.x = 0;
         playerMovementRotation.z = 0;
         playerMovement.rotation = playerMovementRotation;
+
+        Vector3 moveDir = Vector3.ProjectOnPlane(rb.linearVelocity, Vector3.up).normalized;
+        if (moveDir != Vector3.zero) transform.forward = moveDir;
+
         if (!dashing)
         {
             Vector3 horizontalMovement = (moveInput.x * speed * playerMovement.right) + (moveInput.y * speed * playerMovement.forward);
@@ -128,9 +133,11 @@ public class PlayerController : MonoBehaviour
         {
             if (mouseCheck.transform != null)
             {
+                /*
                 transform.LookAt(worldPos);
                 Vector3 euler = transform.rotation.eulerAngles;
                 transform.rotation = Quaternion.Euler(0, euler.y, 0);
+                */
 
                 if (currentWeapon)
                 {
@@ -145,6 +152,7 @@ public class PlayerController : MonoBehaviour
                     weaponPos.z = transform.position.z + currentWeapon.ZOffset;
                     weaponSlot.transform.position = weaponPos;
 
+                    weaponAnim = currentWeapon.GetComponent<Animator>();
                     if (currentWeapon.holdToAttack && attacking)
                     {
                         currentWeapon.fire();
@@ -186,25 +194,29 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //Animations
         if (myAnim != null)
         {
-            if (movingAnim)
+            if (rb.linearVelocity.magnitude >= 5)
             {
-                if (rb.linearVelocity != Vector3.zero)
-                {
-                    myAnim.SetBool("isMoving", true);
-                }
-                else
-                    myAnim.SetBool("isMoving", false);
+                movingAnim = true;
             }
             else
             {
-                myAnim.SetBool("isMoving", false);
+                movingAnim = false;
             }
-            if (attackingAnim)
+            if (movingAnim)
+            {
+                myAnim.SetBool("isMoving", true);
+            }
+            else if (!movingAnim)
             {
                 myAnim.SetBool("isMoving", false);
-                myAnim.SetBool("Attack", true);
+            }
+
+            if (attackingAnim)
+            {
+                weaponAnim.SetBool("isFiring", true);
                 attackingAnim = false;
             }
         }

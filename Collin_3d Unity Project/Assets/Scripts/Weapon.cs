@@ -135,7 +135,6 @@ public class Weapon : MonoBehaviour
             player.canRegenMana = false;
             canFire = false;
             player.attackingAnim = true;
-            player.movingAnim = false;
             StartCoroutine("cooldownFire");
         }
     }
@@ -143,10 +142,7 @@ public class Weapon : MonoBehaviour
     IEnumerator cooldownFire()
     {
         yield return new WaitForSeconds(rof);
-        player.myAnim.SetBool("Attack", false);
-        player.movingAnim = true;
-        player.myAnim.SetBool("isMoving", true);
-
+        player.weaponAnim.SetBool("isFiring", false);
 
         if (clip > 0)
             canFire = true;

@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
     public AudioSource audio;
     public AudioClip bgMusic;
     public AudioClip bossMusic;
-    public AudioClip postBossMusic;
 
     public bool paused = false;
     public bool gameOver = false;
@@ -47,6 +46,8 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         audioSource = GameObject.Find("AudioSource");
         audio = audioSource.GetComponent<AudioSource>();
+
+        audio.volume = 0;
 
         healthBar = GameObject.Find("healthBar").GetComponent<Slider>();
         manaBar = GameObject.Find("manaBar").GetComponent<Slider>();
@@ -135,6 +136,7 @@ public class GameManager : MonoBehaviour
             bossHealthBar.gameObject.SetActive(false);
         }
         enemiesKilled = startEnemyCount - enemyCount;
+        /*
         if (bossActive)
         {
             bossHealthBar.gameObject.SetActive(true);
@@ -145,11 +147,7 @@ public class GameManager : MonoBehaviour
             bossHealthBar.gameObject.SetActive(false);
             audio.PlayOneShot(bgMusic);
         }
-        if (bossDefeated)
-        {
-            bossHealthBar.gameObject.SetActive(false);
-            audio.PlayOneShot(postBossMusic);
-        }
+        */
 
     }
 
